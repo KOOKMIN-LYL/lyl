@@ -1,0 +1,23 @@
+.header {
+    padding: 0.5rem 6rem;
+    background-color: rgba(240,240,240,0.9);
+}
+
+.headerLink {
+    color: black;
+    padding: 0.5rem;
+}
+
+.headerLink:hover{
+    color: gray;
+    text-decoration: none;
+}
+
+.mr-auto {
+    margin-left: 3rem;
+}
+
+/* 
+.myList {
+    margin-right: 50px;
+} */

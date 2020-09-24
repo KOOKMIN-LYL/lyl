@@ -1,0 +1,89 @@
+.cartC {
+    font-size: 12px;
+    margin: 0 auto;
+    max-width: 1200px;
+    min-width: 900px;
+    width: 94%;
+}
+
+.cartTitle {
+    text-align: center;
+    padding: 90px 0 50px 0;
+    font-weight: bold;
+}
+
+.cartProducts table {
+    border: 1px solid #d7d5d5;
+    width: 100%;
+    color: #353535;
+    text-align: center;
+}
+
+.cartProducts thead th {
+    padding: 11px 0 10px;
+    border-left: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    background: #fbfafa;
+    text-align: center;
+}
+
+.cartProducts tbody td {
+    padding: 8px 10px 7px;
+}
+
+.cartProducts tbody td input {
+    width: 29px;
+}
+
+.cartProducts tbody .buttons {
+    width: 110px;
+}
+
+.cartProducts tbody .buttons .btn-sm {
+    font-size: 12px;
+}
+
+.cartProducts tbody .buttons .btn-light {
+    border: 1px solid #777;
+}
+
+.cartProducts tbody .buttons button {
+    width: 90px;
+    margin: 2px;
+}
+
+.totalPrice table {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 60px;
+    border-color: #777;
+    text-align: center;
+}
+
+.totalPrice thead th {
+    height: 60px;
+    padding: 11px 0 10px;
+    border-bottom: 1px solid #dfdfdf;
+    background-color: #fbfafa;
+
+}
+
+.totalPrice tbody td {
+    height: 72px;
+    padding: 11px 0 10px;
+    border-top: 1px solid #dfdfdf;
+    font-size: 20px;
+}
+
+.orderBtn {
+    margin: 40px;
+    text-align: center;
+}
+
+.orderBtn button {
+    margin: 5px;
+}
+
+.orderBtn .btn-light {
+    border: 1px solid #777;
+}

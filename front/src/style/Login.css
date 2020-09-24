@@ -1,0 +1,65 @@
+ul {
+    margin: 0px;
+    padding : 0px;
+ }
+ 
+ li {
+     list-style: none;
+ }
+
+.loginC {
+    position: absolute;
+    top : 50%;
+    left: 50%;
+    margin-top: -190px;
+    margin-left: -130px;
+    height: 280px;
+    width: 260px;
+    text-align: center;
+}
+
+
+.loginC h5 {
+    margin-bottom: 50px;
+    font-weight: bold;
+}
+
+.loginC li {
+    margin-bottom: 40px;
+}
+
+.loginC label {
+    display: block;
+    color: #8d8c8c;
+}
+
+.loginC input {
+    margin: 0 3px;
+    width: 240px;
+    padding:0 5px;
+    height: 38px;
+    border: none;
+    border-bottom: 2px solid #8d8c8c;
+    line-height: 38px;
+}
+
+.loginC input:focus {
+    outline: none;
+}
+
+.loginC .btn-dark{
+    background-color: black;
+    margin: 20px 0 20px 0;
+}
+
+.link {
+    color: #8d8c8c !important;
+    margin: 0 0.5rem 0 0.5rem;
+    font-size: 11px;
+}
+
+.linkCenter {
+    padding: 0 1rem 0 1rem;
+    border-left: 1px solid #8d8c8c;
+    border-right: 1px solid #8d8c8c;
+}

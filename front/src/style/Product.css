@@ -1,0 +1,77 @@
+.imgArea {
+    width: 55%;
+    float: left;
+    padding: 80px 50px 45px;
+}
+
+.img {
+    text-align: center;
+}
+
+.detailArea {
+    width: 45%;
+    float: right;
+    padding: 80px 30px;
+}
+
+.productName {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dedede;
+}
+
+.productName  h4 {
+    font-weight: bold;
+}
+
+.productDetail {
+    margin-top: 20px;
+    font-weight: 500;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dedede;
+}
+
+.productDetail th {
+    width: 120px;
+    padding: 7px 9px 8px 0;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.productDetail td {
+    padding: 7px 10px 8px 0;
+    vertical-align: middle;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: 900 !important;
+}
+
+.productOption {
+    margin-top: 20px;
+    font-weight: 500;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dedede;
+}
+
+.productOption th {
+    width: 120px;
+    padding: 7px 9px 8px 0;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.buttonArea{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.darkBtn {
+    margin: 5px 0 5px 0 ;
+}
+
+
+.greyBtn {
+    width: 46%;
+    margin: 2%;
+}
