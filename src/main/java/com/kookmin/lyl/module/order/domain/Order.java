@@ -15,7 +15,7 @@ import java.util.List;
 public class Order {
     @Id @GeneratedValue
     @Column(name = "ORDER_ID")
-    private long id;
+    private Long id;
 
     @Column(name = "TOTAL_PRICE")
     private int totalPrice;
