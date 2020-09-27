@@ -46,6 +46,7 @@ public class Member {
     private MemberStatus status;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="MEMBER_TYPE")
     private MemberType memberType;
 
     @Builder
