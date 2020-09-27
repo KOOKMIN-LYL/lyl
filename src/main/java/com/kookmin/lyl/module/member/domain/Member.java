@@ -46,11 +46,10 @@ public class Member {
     private MemberType memberType;
 
     @Builder
-    public Member(String name, long usn, String id, String password, String address, String phone, String email) {
+    public Member(String name, String id, String password, String address, String phone, String email) {
         this.name = name;
         this.id = id;
         this.address = address;
-        this.usn = usn;
         this.password = password;
         this.phone = phone;
         this.email = email;
