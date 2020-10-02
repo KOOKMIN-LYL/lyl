@@ -1,18 +1,23 @@
 package com.kookmin.lyl.module.member.domain;
 
+import com.kookmin.lyl.module.order.domain.Order;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Getter
 @NoArgsConstructor
-@Table(name="Member")
+@Table(name="MEMBER")
+@Data
+@Getter
 public class Member {
     // usn은 자동생성으로
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="USN")
     private Long usn;
 
@@ -30,10 +35,6 @@ public class Member {
 
     @Column(name="PASSWORD")
     private String password;
-
-//    @Column(name="zipCode")
-//    private int zipCode;
-//    짚코드는 빼자
 
     @Column(name="PHONE")
     private String phone;
@@ -61,8 +62,28 @@ public class Member {
         this.memberType = MemberType.USER;
     }
 
+    // 이름 수정 부분
     public void editName(String name) {
         this.name = name;
     }
+    // 주소 수정 부분
+    public void editAddress(String address) {
+        this.address = address;
+    }
+    // 전화번호 수정 부분
+    public void editPhone(String phone) {
+        this.phone = phone;
+    }
+    // 이메일 수정 부분
+    public void editEmail(String email) {
+        this.email = email;
+    }
+
+    public String getId(){
+        return id;
+    }
+
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<Order>();
 
 }

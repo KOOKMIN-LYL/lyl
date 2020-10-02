@@ -30,4 +30,12 @@ public class OrderProduct {
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
+    //==조회 로직==//
+    /** 주문상품 전체 가격 조회 */
+    public int getTotalPrice() {
+        // 상품의 가격 * 상품의 수량
+        return getProductPrice() * getQuantity();
+    }
+
+
 }
