@@ -2,6 +2,7 @@ package com.kookmin.lyl.module.product.domain;
 
 import com.kookmin.lyl.module.category.domain.Category;
 import com.kookmin.lyl.module.shop.domain.Shop;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -44,4 +45,24 @@ public class Product {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ProductOption> productOptions = new ArrayList<ProductOption>();
+
+    @Builder
+    public Product(String name, Integer price, String origin, String manufacturer, Category category, Shop shop) {
+        this.name = name;
+        this.price = price;
+        this.origin = origin;
+        this.manufacturer = manufacturer;
+        this.status = ProductStatus.ON_SALE;
+
+        changeCategory(category);
+        changeShop(shop);
+    }
+
+    public void changeCategory(Category category) {
+        this.category = category;
+    }
+
+    public void changeShop(Shop shop) {
+        this.shop = shop;
+    }
 }
