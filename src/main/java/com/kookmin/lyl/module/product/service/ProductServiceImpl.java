@@ -4,6 +4,7 @@ import com.kookmin.lyl.infra.util.SearchCondition;
 import com.kookmin.lyl.module.category.domain.Category;
 import com.kookmin.lyl.module.category.repository.CategoryRepository;
 import com.kookmin.lyl.module.product.domain.Product;
+import com.kookmin.lyl.module.product.domain.ProductOption;
 import com.kookmin.lyl.module.product.dto.*;
 import com.kookmin.lyl.module.product.repository.ProductOptionRepository;
 import com.kookmin.lyl.module.product.repository.ProductRepository;
@@ -91,8 +92,19 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void addProductOption(Long productNumber, ProductOptionInfo productOptionInfo) {
+    public Long addProductOption(ProductOptionInfo productOptionInfo) {
+        Product product = productRepository.findById(productOptionInfo.getProductNumber())
+                .orElseThrow(EntityNotFoundException::new);
 
+        ProductOption productOption = ProductOption.builder()
+                .option(productOptionInfo.getOption())
+                .type(productOptionInfo.getType())
+                .product(product)
+                .build();
+
+        productOption = productOptionRepository.save(productOption);
+
+        return productOption.getId();
     }
 
     @Override

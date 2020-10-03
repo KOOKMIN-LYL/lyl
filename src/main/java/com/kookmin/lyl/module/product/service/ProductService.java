@@ -14,7 +14,7 @@ public interface ProductService {
     public void deleteProduct(Long productNumber);
     public ProductDetails findProduct(Long productNumber);
     public List<ProductDetails> searchProducts(Pageable pageable, SearchCondition searchCondition);
-    public void addProductOption(Long productNumber, ProductOptionInfo productOptionInfo);
+    public Long addProductOption(ProductOptionInfo productOptionInfo);
     public void editProductOption(Long productNumber, Long productOptionId, ProductOptionInfo productOptionInfo);
     public void deleteProductOption(Long productNumber, Long productOptionId);
     public ProductOptionDetails findProductOption(Long productOptionId);

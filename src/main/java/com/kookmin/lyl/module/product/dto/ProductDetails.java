@@ -1,6 +1,7 @@
 package com.kookmin.lyl.module.product.dto;
 
 import com.kookmin.lyl.module.product.domain.Product;
+import com.kookmin.lyl.module.product.domain.ProductStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ public class ProductDetails {
     private Integer price;
     private String manufacturer;
     private String origin;
+    private ProductStatus status;
     private Long categoryId;
     private Long shopId;
 
@@ -22,6 +24,7 @@ public class ProductDetails {
         this.price = product.getPrice();
         this.manufacturer = product.getManufacturer();
         this.origin = product.getOrigin();
+        this.status = product.getStatus();
         this.categoryId = product.getCategory().getId();
         this.shopId = product.getShop().getShopNumber();
     }
