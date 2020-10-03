@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,12 +38,22 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void editCategory(@NonNull Long categoryId, @NonNull CategoryEditInfo categoryEditInfo) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(EntityNotFoundException::new);
 
+        category.editName(categoryEditInfo.getName());
+    }
+
+    @Override
+    public void swapCategory(Long categoryId, Long targetCategoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(EntityNotFoundException::new);
+        Category targetCategory = categoryRepository.findById(targetCategoryId).orElseThrow(EntityNotFoundException::new);
+
+        category.swapSortOrder(targetCategory);
     }
 
     @Override
     public void deleteCategory(@NonNull Long categoryId) {
-
+        categoryRepository.deleteById(categoryId);
     }
 
     @Override
@@ -52,7 +63,14 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<CategoryDetails> findCategories(@NonNull Long shopNumber) {
-        return null;
+    public List<CategoryDetails> findCategories() {
+        List<Category> categories =  categoryRepository.findAll();
+        List<CategoryDetails> categoryDetails = new ArrayList<>();
+
+        for(Category category : categories) {
+            categoryDetails.add(new CategoryDetails(category));
+        }
+
+        return categoryDetails;
     }
 }

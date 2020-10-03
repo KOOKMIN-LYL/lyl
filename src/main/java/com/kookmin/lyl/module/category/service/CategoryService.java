@@ -9,7 +9,8 @@ import java.util.List;
 public interface CategoryService {
     public Long createCategory(CategoryCreateInfo categoryCreateInfo);
     public void editCategory(Long categoryId, CategoryEditInfo categoryEditInfo);
+    public void swapCategory(Long categoryId, Long targetCategoryId);
     public void deleteCategory(Long categoryId);
     public CategoryDetails findCategory(Long categoryId);
-    public List<CategoryDetails> findCategories(Long shopNumber);
+    public List<CategoryDetails> findCategories();
 }
