@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -133,9 +134,15 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductOptionDetails> findProductOptions(@NonNull Long ProductNumber) {
+    public List<ProductOptionDetails> findProductOptions(@NonNull Long productNumber) {
+        List<ProductOption> productOptions = productOptionRepository.findByProductNumber(productNumber);
+        List<ProductOptionDetails> productOptionDetails = new ArrayList<>();
 
-        return null;
+        for(ProductOption productOption : productOptions) {
+            productOptionDetails.add(new ProductOptionDetails(productOption));
+        }
+
+        return productOptionDetails;
     }
 
     //TODO:: product와 연관관계가 없는 productOption이 수정될 가능성이 있으므로 이를 방지해야함, 여러 로직에서 쓰일 수 있으므로 메소드로 분리

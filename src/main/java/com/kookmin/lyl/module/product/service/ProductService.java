@@ -18,5 +18,5 @@ public interface ProductService {
     public void editProductOption(ProductOptionEditInfo productOptionEditInfo);
     public void deleteProductOption(Long productNumber, Long productOptionId);
     public ProductOptionDetails findProductOption(Long productOptionId);
-    public List<ProductOptionDetails> findProductOptions(Long ProductNumber);
+    public List<ProductOptionDetails> findProductOptions(Long productNumber);
 }
