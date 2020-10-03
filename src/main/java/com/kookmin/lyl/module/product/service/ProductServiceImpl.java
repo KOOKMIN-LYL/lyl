@@ -127,11 +127,14 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductOptionDetails findProductOption(@NonNull Long productOptionId) {
-        return null;
+        ProductOption productOption = productOptionRepository.findById(productOptionId)
+                .orElseThrow(EntityNotFoundException::new);
+        return new ProductOptionDetails(productOption);
     }
 
     @Override
     public List<ProductOptionDetails> findProductOptions(@NonNull Long ProductNumber) {
+
         return null;
     }
 
