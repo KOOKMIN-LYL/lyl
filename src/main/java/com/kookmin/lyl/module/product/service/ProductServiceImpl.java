@@ -12,6 +12,7 @@ import com.kookmin.lyl.module.shop.domain.Shop;
 import com.kookmin.lyl.module.shop.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class ProductServiceImpl implements ProductService{
     private final ShopRepository shopRepository;
 
     @Override
-    public Long createProduct(ProductCreateInfo productCreateInfo) {
+    public Long createProduct(@NonNull ProductCreateInfo productCreateInfo) {
         Shop shop = shopRepository.findById(productCreateInfo.getShopId())
                 .orElseThrow(EntityNotFoundException::new);
         Category category = categoryRepository.findById(productCreateInfo.getCategoryId())
@@ -49,7 +50,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void editProduct(Long productNumber, ProductEditInfo productEditInfo) {
+    public void editProduct(@NonNull Long productNumber, @NonNull ProductEditInfo productEditInfo) {
         Product product = productRepository.findById(productNumber)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -60,7 +61,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void stopSellingProduct(Long productNumber) {
+    public void stopSellingProduct(@NonNull Long productNumber) {
         Product product = productRepository.findById(productNumber)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -68,7 +69,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void sellingProduct(Long productNumber) {
+    public void sellingProduct(@NonNull Long productNumber) {
         Product product = productRepository.findById(productNumber)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -76,23 +77,23 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void deleteProduct(Long productNumber) {
+    public void deleteProduct(@NonNull Long productNumber) {
         productRepository.deleteById(productNumber);
     }
 
     @Override
-    public ProductDetails findProduct(Long productNumber) {
+    public ProductDetails findProduct(@NonNull Long productNumber) {
         Product product = productRepository.findById(productNumber).orElseThrow(EntityNotFoundException::new);
         return new ProductDetails(product);
     }
 
     @Override
-    public List<ProductDetails> searchProducts(Pageable pageable, SearchCondition searchCondition) {
+    public List<ProductDetails> searchProducts(@NonNull Pageable pageable, @NonNull SearchCondition searchCondition) {
         return null;
     }
 
     @Override
-    public Long addProductOption(ProductOptionCreateInfo productOptionInfo) {
+    public Long addProductOption(@NonNull ProductOptionCreateInfo productOptionInfo) {
         Product product = productRepository.findById(productOptionInfo.getProductNumber())
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -108,19 +109,9 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void editProductOption(ProductOptionEditInfo productOptionEditInfo) {
-        Product product = productRepository.findById(productOptionEditInfo.getProductNumber())
-                .orElseThrow(EntityNotFoundException::new);
-
-        //TODO:: product와 연관관계가 없는 productOption이 수정될 가능성이 있으므로 이를 방지해야함, 여러 로직에서 쓰일 수 있으므로 메소드로 분리
-        List<ProductOption> productOptions =product.getProductOptions();
-
-        ProductOption productOption = productOptionRepository.findById(productOptionEditInfo.getId())
-                .orElseThrow(EntityNotFoundException::new);
-
-        if(!productOptions.contains(productOption)) {
-            throw new RuntimeException();
-        }
+    public void editProductOption(@NonNull ProductOptionEditInfo productOptionEditInfo) {
+        ProductOption productOption = this.validateProductOption(productOptionEditInfo.getProductNumber(),
+                productOptionEditInfo.getId());
 
         productOption.editProductOption(
                 productOptionEditInfo.getOption(),
@@ -129,17 +120,35 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void deleteProductOption(Long productNumber, Long productOptionId) {
-        
+    public void deleteProductOption(@NonNull Long productNumber, @NonNull Long productOptionId) {
+        this.validateProductOption(productNumber, productOptionId);
+        productOptionRepository.deleteById(productOptionId);
     }
 
     @Override
-    public ProductOptionDetails findProductOption(Long productOptionId) {
+    public ProductOptionDetails findProductOption(@NonNull Long productOptionId) {
         return null;
     }
 
     @Override
-    public List<ProductOptionDetails> findProductOptions(Long ProductNumber) {
+    public List<ProductOptionDetails> findProductOptions(@NonNull Long ProductNumber) {
         return null;
+    }
+
+    //TODO:: product와 연관관계가 없는 productOption이 수정될 가능성이 있으므로 이를 방지해야함, 여러 로직에서 쓰일 수 있으므로 메소드로 분리
+    private ProductOption validateProductOption(Long productNumber, Long productOptionId) {
+        Product product = productRepository.findById(productNumber)
+                .orElseThrow(EntityNotFoundException::new);
+
+        List<ProductOption> productOptions =product.getProductOptions();
+
+        ProductOption productOption = productOptionRepository.findById(productOptionId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        if(!productOptions.contains(productOption)) {
+            throw new RuntimeException();
+        }
+
+        return productOption;
     }
 }
