@@ -60,12 +60,18 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void stopSellingProduct(Long productNumber) {
+        Product product = productRepository.findById(productNumber)
+                .orElseThrow(EntityNotFoundException::new);
 
+        product.soldOutProduct();
     }
 
     @Override
     public void sellingProduct(Long productNumber) {
+        Product product = productRepository.findById(productNumber)
+                .orElseThrow(EntityNotFoundException::new);
 
+        product.onSaleProduct();
     }
 
     @Override

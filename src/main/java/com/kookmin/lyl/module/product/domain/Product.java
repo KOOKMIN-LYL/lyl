@@ -65,6 +65,14 @@ public class Product {
         this.manufacturer = manufacturer;
     }
 
+    public void soldOutProduct() {
+        this.status = ProductStatus.SOLD_SOUT;
+    }
+
+    public void onSaleProduct() {
+        this.status = ProductStatus.ON_SALE;
+    }
+
     public void changeCategory(Category category) {
         this.category = category;
     }
