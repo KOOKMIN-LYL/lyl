@@ -81,7 +81,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductDetails findProduct(Long productNumber) {
-        return null;
+        Product product = productRepository.findById(productNumber).orElseThrow(EntityNotFoundException::new);
+        return new ProductDetails(product);
     }
 
     @Override
