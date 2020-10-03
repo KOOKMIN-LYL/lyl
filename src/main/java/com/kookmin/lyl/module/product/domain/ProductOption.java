@@ -33,6 +33,11 @@ public class ProductOption {
         changeProduct(product);
     }
 
+    public void editProductOption(String option, ProductOptionType type) {
+        this.option = option;
+        this.type = type;
+    }
+
     public void changeProduct(Product product) {
         //TODO:: 양방향 참조 관계일 경우 각각의 레퍼런스가 중복되거나 동기화되지 않는 경우를 고려하는 로직이 필요하다.
         this.product = product;

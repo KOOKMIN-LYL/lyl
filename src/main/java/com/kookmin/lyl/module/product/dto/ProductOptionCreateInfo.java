@@ -7,8 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-public class ProductOptionInfo {
-    private Long id;
+public class ProductOptionCreateInfo {
     private String option;
     private ProductOptionType type;
     private Long productNumber;

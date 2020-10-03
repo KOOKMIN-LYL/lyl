@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Long addProductOption(ProductOptionInfo productOptionInfo) {
+    public Long addProductOption(ProductOptionCreateInfo productOptionInfo) {
         Product product = productRepository.findById(productOptionInfo.getProductNumber())
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -108,13 +108,29 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void editProductOption(Long productNumber, Long productOptionId, ProductOptionInfo productOptionInfo) {
+    public void editProductOption(ProductOptionEditInfo productOptionEditInfo) {
+        Product product = productRepository.findById(productOptionEditInfo.getProductNumber())
+                .orElseThrow(EntityNotFoundException::new);
 
+        //TODO:: product와 연관관계가 없는 productOption이 수정될 가능성이 있으므로 이를 방지해야함, 여러 로직에서 쓰일 수 있으므로 메소드로 분리
+        List<ProductOption> productOptions =product.getProductOptions();
+
+        ProductOption productOption = productOptionRepository.findById(productOptionEditInfo.getId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        if(!productOptions.contains(productOption)) {
+            throw new RuntimeException();
+        }
+
+        productOption.editProductOption(
+                productOptionEditInfo.getOption(),
+                productOptionEditInfo.getType()
+        );
     }
 
     @Override
     public void deleteProductOption(Long productNumber, Long productOptionId) {
-
+        
     }
 
     @Override
