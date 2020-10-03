@@ -50,7 +50,12 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void editProduct(Long productNumber, ProductEditInfo productEditInfo) {
         Product product = productRepository.findById(productNumber)
-                .orElseThrow();
+                .orElseThrow(EntityNotFoundException::new);
+
+        product.eidtProduct(productEditInfo.getName(),
+                productEditInfo.getPrice(),
+                productEditInfo.getOrigin(),
+                productEditInfo.getManufacturer());
     }
 
     @Override

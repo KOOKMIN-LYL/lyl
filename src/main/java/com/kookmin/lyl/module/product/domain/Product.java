@@ -58,6 +58,13 @@ public class Product {
         changeShop(shop);
     }
 
+    public void eidtProduct(String name, Integer price, String origin, String manufacturer) {
+        this.name = name;
+        this.price = price;
+        this.origin = origin;
+        this.manufacturer = manufacturer;
+    }
+
     public void changeCategory(Category category) {
         this.category = category;
     }
