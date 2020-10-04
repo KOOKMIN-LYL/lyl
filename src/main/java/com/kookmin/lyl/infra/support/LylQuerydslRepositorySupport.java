@@ -30,7 +30,7 @@ public abstract class LylQuerydslRepositorySupport {
     private JPAQueryFactory queryFactory;
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
-    public LylQuerydslRepositorySupport(Class domainClass) {
+    public LylQuerydslRepositorySupport(Class<?> domainClass) {
         notNull(domainClass, "Domain class must not be null!");
         this.domainClass = domainClass;
     }
