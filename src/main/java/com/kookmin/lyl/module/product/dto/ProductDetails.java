@@ -31,8 +31,6 @@ public class ProductDetails {
         this.shopId = shopId;
     }
 
-
-
     //TODO:: 지연로딩때문에 페치 조인 전략으로 바꿀 필요가 있음
     public ProductDetails(Product product) {
         this.productNumber = product.getProductNumber();
