@@ -134,4 +134,12 @@ class ProductServiceImplTest {
         assertThat(productRepository.findAll().size())
                 .isEqualTo(size-1);
     }
+
+    @Test
+    @DisplayName("findProduct_성공_테스트")
+    public void test_findProduct_success() {
+        ProductDetails result = productService.findProduct(firstProduct);
+        System.out.println(result);
+    }
+
 }
