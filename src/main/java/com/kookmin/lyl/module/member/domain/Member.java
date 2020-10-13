@@ -1,20 +1,18 @@
 package com.kookmin.lyl.module.member.domain;
 
 import com.kookmin.lyl.module.order.domain.Order;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@Table(name="MEMBER")
-@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
+// @RequiredArgsConstructor
+@Table(name="MEMBER")
 public class Member {
     // usn은 자동생성으로
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,23 +21,23 @@ public class Member {
 
     // 상품의 ID와 겹칠 수 있으므로 구분을 위해 MEMBER_ 삽입
     @Column(name="MEMBER_ID")
-    private String id;
+    private String memberId;
 
     // 상품의 이름에 NAME 이 사용될 수 있으므로 구분을 위해 MEMBER_ 삽입
     @Column(name="MEMBER_NAME")
-    private String name;
+    private String memberName;
 
     // 사용자의 주소와 주문 주소가 다를 수 있으니, MEMBER_ 을 붙여놓겠습니다
     @Column(name="MEMBER_ADDRESS")
     private String address;
 
-    @Column(name="PASSWORD")
+    @Column(name="MEMBER_PASSWORD")
     private String password;
 
-    @Column(name="PHONE")
+    @Column(name="MEMBER_PHONE")
     private String phone;
 
-    @Column(name="EMAIL")
+    @Column(name="MEMBER_EMAIL")
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -51,9 +49,9 @@ public class Member {
     private MemberType memberType;
 
     @Builder
-    public Member(String name, String id, String password, String address, String phone, String email) {
-        this.name = name;
-        this.id = id;
+    public Member(String memberName, String memberId, String password, String address, String phone, String email) {
+        this.memberName = memberName;
+        this.memberId = memberId;
         this.address = address;
         this.password = password;
         this.phone = phone;
@@ -63,8 +61,8 @@ public class Member {
     }
 
     // 이름 수정 부분
-    public void editName(String name) {
-        this.name = name;
+    public void editName(String memberName) {
+        this.memberName = memberName;
     }
     // 주소 수정 부분
     public void editAddress(String address) {
@@ -80,10 +78,9 @@ public class Member {
     }
 
     public String getId(){
-        return id;
+        return memberId;
     }
 
-    @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<Order>();
+
 
 }
