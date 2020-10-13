@@ -3,9 +3,8 @@ package com.kookmin.lyl.module.product.service;
 import com.kookmin.lyl.module.category.domain.Category;
 import com.kookmin.lyl.module.category.repository.CategoryRepository;
 import com.kookmin.lyl.module.product.domain.Product;
-import com.kookmin.lyl.module.product.dto.ProductCreateInfo;
-import com.kookmin.lyl.module.product.dto.ProductDetails;
-import com.kookmin.lyl.module.product.dto.ProductEditInfo;
+import com.kookmin.lyl.module.product.domain.ProductOptionType;
+import com.kookmin.lyl.module.product.dto.*;
 import com.kookmin.lyl.module.product.repository.ProductRepository;
 import com.kookmin.lyl.module.shop.domain.Shop;
 import com.kookmin.lyl.module.shop.repository.ShopRepository;
@@ -142,4 +141,23 @@ class ProductServiceImplTest {
         System.out.println(result);
     }
 
+    @Test
+    @DisplayName("addProductOption_성공_테스트")
+    public void test_addProductOption_success() {
+        ProductOptionCreateInfo productOptionCreateInfo = new ProductOptionCreateInfo();
+        productOptionCreateInfo.setType(ProductOptionType.SIZE);
+        productOptionCreateInfo.setOption("옵션1");
+        productOptionCreateInfo.setProductNumber(firstProduct);
+
+        Long productOptionId = productService.addProductOption(productOptionCreateInfo);
+        ProductOptionDetails result = productService.findProductOption(productOptionId);
+
+        assertThat(result)
+                .hasFieldOrPropertyWithValue("type", productOptionCreateInfo.getType().toString())
+                .hasFieldOrPropertyWithValue("id", productOptionId)
+                .hasFieldOrPropertyWithValue("option", productOptionCreateInfo.getOption())
+                .hasFieldOrPropertyWithValue("productNumber", productOptionCreateInfo.getProductNumber());
+
+
+    }
 }
