@@ -5,6 +5,7 @@ import com.kookmin.lyl.module.category.repository.CategoryRepository;
 import com.kookmin.lyl.module.product.domain.Product;
 import com.kookmin.lyl.module.product.dto.ProductCreateInfo;
 import com.kookmin.lyl.module.product.dto.ProductDetails;
+import com.kookmin.lyl.module.product.dto.ProductEditInfo;
 import com.kookmin.lyl.module.product.repository.ProductRepository;
 import com.kookmin.lyl.module.shop.domain.Shop;
 import com.kookmin.lyl.module.shop.repository.ShopRepository;
@@ -28,8 +29,10 @@ class ProductServiceImplTest {
     @Autowired private ShopRepository shopRepository;
     @Autowired private CategoryRepository categoryRepository;
     @Autowired private ProductRepository productRepository;
+
     private Long shopNumber;
     private Long categoryId;
+    private Long firstProduct;
 
     @BeforeEach
     public void setUp() {
@@ -74,6 +77,7 @@ class ProductServiceImplTest {
 
         this.categoryId = category.getId();
         this.shopNumber = shop.getShopNumber();
+        this.firstProduct = product1.getId();
     }
 
     @Test
@@ -99,5 +103,25 @@ class ProductServiceImplTest {
                 .hasFieldOrPropertyWithValue("price", productCreateInfo.getPrice())
                 .hasFieldOrPropertyWithValue("categoryId", productCreateInfo.getCategoryId())
                 .hasFieldOrPropertyWithValue("shopNumber", productCreateInfo.getShopId());
+    }
+
+    @Test
+    @DisplayName("editProduct_성공_테스트")
+    public void test_editProduct_success() {
+        ProductEditInfo productEditInfo = new ProductEditInfo();
+        productEditInfo.setManufacturer("제조시 수정");
+        productEditInfo.setName("품목 수정");
+        productEditInfo.setOrigin("원산지 수정");
+        productEditInfo.setPrice(999);
+
+        productService.editProduct(firstProduct, productEditInfo);
+
+        ProductDetails result = productService.findProduct(firstProduct);
+
+        assertThat(result)
+                .hasFieldOrPropertyWithValue("Manufacturer", productEditInfo.getManufacturer())
+                .hasFieldOrPropertyWithValue("name", productEditInfo.getName())
+                .hasFieldOrPropertyWithValue("origin", productEditInfo.getOrigin())
+                .hasFieldOrPropertyWithValue("price", productEditInfo.getPrice());
     }
 }
