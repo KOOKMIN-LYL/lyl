@@ -2,6 +2,7 @@ package com.kookmin.lyl.module.product.service;
 
 import com.kookmin.lyl.infra.util.SearchCondition;
 import com.kookmin.lyl.module.product.dto.*;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface ProductService {
     public void sellingProduct(Long productNumber);
     public void deleteProduct(Long productNumber);
     public ProductDetails findProduct(Long productNumber);
-    public List<ProductDetails> searchProducts(Pageable pageable, SearchCondition searchCondition);
+    public Page<ProductDetails> searchProducts(Pageable pageable, ProductSearchCondition searchCondition);
     public Long addProductOption(ProductOptionCreateInfo productOptionCreateInfo);
     public void editProductOption(ProductOptionEditInfo productOptionEditInfo);
     public void deleteProductOption(Long productNumber, Long productOptionId);

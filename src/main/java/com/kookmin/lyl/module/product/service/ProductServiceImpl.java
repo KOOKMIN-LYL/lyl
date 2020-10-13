@@ -8,9 +8,11 @@ import com.kookmin.lyl.module.product.domain.ProductOption;
 import com.kookmin.lyl.module.product.dto.*;
 import com.kookmin.lyl.module.product.repository.ProductOptionRepository;
 import com.kookmin.lyl.module.product.repository.ProductRepository;
+import com.kookmin.lyl.module.product.repository.ProductRepositorySearch;
 import com.kookmin.lyl.module.shop.domain.Shop;
 import com.kookmin.lyl.module.shop.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ public class ProductServiceImpl implements ProductService{
     private final ProductOptionRepository productOptionRepository;
     private final CategoryRepository categoryRepository;
     private final ShopRepository shopRepository;
+    private final ProductRepositorySearch productRepositorySearch;
 
     @Override
     public Long createProduct(@NonNull ProductCreateInfo productCreateInfo) {
@@ -101,8 +104,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductDetails> searchProducts(@NonNull Pageable pageable, @NonNull SearchCondition searchCondition) {
-        return null;
+    public Page<ProductDetails> searchProducts(@NonNull Pageable pageable, @NonNull ProductSearchCondition searchCondition) {
+        return productRepositorySearch.searchProductDetails(pageable, searchCondition);
     }
 
     @Override
