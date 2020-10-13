@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService{
 
         product = productRepository.save(product);
 
-        return product.getProductNumber();
+        return product.getId();
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductDetails findProduct(@NonNull Long productNumber) {
         Product product = productRepository.findById(productNumber).orElseThrow(EntityNotFoundException::new);
-        List<ProductOption> productOptions = productOptionRepository.findByProductNumber(product.getProductNumber());
+        List<ProductOption> productOptions = productOptionRepository.findByProductId(product.getId());
 
         ProductDetails productDetails = new ProductDetails(product);
         List<ProductOptionDetails> productOptionDetails = new ArrayList<ProductOptionDetails>();
@@ -150,7 +150,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductOptionDetails> findProductOptions(@NonNull Long productNumber) {
-        List<ProductOption> productOptions = productOptionRepository.findByProductNumber(productNumber);
+        List<ProductOption> productOptions = productOptionRepository.findByProductId(productNumber);
         List<ProductOptionDetails> productOptionDetails = new ArrayList<>();
 
         for(ProductOption productOption : productOptions) {

@@ -17,7 +17,7 @@ import java.util.List;
 public class Product {
     @Id @GeneratedValue
     @Column(name="PRODUCT_ID")
-    private Long productNumber;
+    private Long id;
 
     @Column(name="NAME")
     private String name;

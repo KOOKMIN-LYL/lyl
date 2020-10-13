@@ -17,6 +17,6 @@ public class ProductOptionDetails {
         this.id = productOption.getId();
         this.option = productOption.getOption();
         this.type = productOption.getType().toString();
-        this.productNumber = productOption.getProduct().getProductNumber();
+        this.productNumber = productOption.getProduct().getId();
     }
 }

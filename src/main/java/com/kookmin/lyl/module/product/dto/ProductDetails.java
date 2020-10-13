@@ -19,12 +19,12 @@ public class ProductDetails {
     private String origin;
     private ProductStatus status;
     private Long categoryId;
-    private Long shopId;
+    private Long shopNumber;
     private List<ProductOptionDetails> productOptionDetails;
 
     @QueryProjection
     public ProductDetails(Long productNumber, String name, Integer price, String manufacturer, String origin,
-                          ProductStatus status, Long categoryId, Long shopId) {
+                          ProductStatus status, Long categoryId, Long shopNumber) {
         this.productNumber = productNumber;
         this.name = name;
         this.price = price;
@@ -32,18 +32,18 @@ public class ProductDetails {
         this.origin = origin;
         this.status = status;
         this.categoryId = categoryId;
-        this.shopId = shopId;
+        this.shopNumber = shopNumber;
     }
 
     //TODO:: 지연로딩때문에 페치 조인 전략으로 바꿀 필요가 있음
     public ProductDetails(Product product) {
-        this.productNumber = product.getProductNumber();
+        this.productNumber = product.getId();
         this.name = product.getName();
         this.price = product.getPrice();
         this.manufacturer = product.getManufacturer();
         this.origin = product.getOrigin();
         this.status = product.getStatus();
         this.categoryId = product.getCategory().getId();
-        this.shopId = product.getShop().getShopNumber();
+        this.shopNumber = product.getShop().getShopNumber();
     }
 }
