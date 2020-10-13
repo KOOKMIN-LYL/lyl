@@ -36,7 +36,11 @@ public class Category {
     }
 
     public void initSortOrder(Category category) {
-        this.sortOrder = category.getSortOrder() + 1L;
+        if(category == null) {
+            this.sortOrder = 1L;
+        } else {
+            this.sortOrder = category.getSortOrder() + 1L;
+        }
     }
 
     public void editName(String name) {

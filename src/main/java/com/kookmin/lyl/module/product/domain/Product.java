@@ -2,6 +2,7 @@ package com.kookmin.lyl.module.product.domain;
 
 import com.kookmin.lyl.module.category.domain.Category;
 import com.kookmin.lyl.module.shop.domain.Shop;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
