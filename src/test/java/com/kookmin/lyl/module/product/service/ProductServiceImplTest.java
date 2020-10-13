@@ -124,4 +124,14 @@ class ProductServiceImplTest {
                 .hasFieldOrPropertyWithValue("origin", productEditInfo.getOrigin())
                 .hasFieldOrPropertyWithValue("price", productEditInfo.getPrice());
     }
+
+    @Test
+    @DisplayName("deleteProduct_성공_테스트")
+    public void test_deleteProduct_success() {
+        int size = productRepository.findAll().size();
+        productService.deleteProduct(firstProduct);
+
+        assertThat(productRepository.findAll().size())
+                .isEqualTo(size-1);
+    }
 }
