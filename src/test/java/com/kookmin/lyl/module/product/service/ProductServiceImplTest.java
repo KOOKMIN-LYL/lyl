@@ -8,22 +8,23 @@ import com.kookmin.lyl.module.product.dto.*;
 import com.kookmin.lyl.module.product.repository.ProductRepository;
 import com.kookmin.lyl.module.shop.domain.Shop;
 import com.kookmin.lyl.module.shop.repository.ShopRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -212,5 +213,19 @@ class ProductServiceImplTest {
 
         assertThat(productService.findProductOptions(firstProduct).size())
                 .isEqualTo(result.size() -1);
+    }
+
+    @Test
+    @DisplayName("searchProduct_성공_테스트")
+    public void test_searchProduct_success() {
+        ProductSearchCondition condition = new ProductSearchCondition();
+        condition.setCategoryId(categoryId);
+
+        PageRequest request = PageRequest.of(0, 2);
+
+        Page<ProductDetails> result = productService.searchProducts(request, condition);
+        for(ProductDetails productDetails : result.getContent()){
+            System.out.println(productDetails);
+        }
     }
 }

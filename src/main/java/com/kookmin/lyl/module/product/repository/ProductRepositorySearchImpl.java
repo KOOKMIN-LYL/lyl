@@ -6,6 +6,7 @@ import com.kookmin.lyl.module.product.domain.Product;
 import com.kookmin.lyl.module.product.domain.QProduct;
 import com.kookmin.lyl.module.product.dto.ProductDetails;
 import com.kookmin.lyl.module.product.dto.ProductSearchCondition;
+import com.kookmin.lyl.module.product.dto.QProductDetails;
 import com.kookmin.lyl.module.shop.domain.QShop;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,10 @@ public class ProductRepositorySearchImpl extends LylQuerydslRepositorySupport im
     @Override
     public Page<ProductDetails> searchProductDetails(Pageable pageable, ProductSearchCondition condition) {
         return applyPagination(pageable, contentQuery -> contentQuery
-        .selectFrom(product)
+        .select(new QProductDetails(
+            product.id, product.name, product.price, product.manufacturer, product.origin, product.status,
+                product.category.id, product.shop.shopNumber)
+        ).from(product)
         .leftJoin(product.category, category)
         .leftJoin(product.shop, shop)
         .where(categoryIdEq(condition.getCategoryId())));
