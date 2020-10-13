@@ -5,6 +5,7 @@ import com.kookmin.lyl.module.category.domain.Category;
 import com.kookmin.lyl.module.category.repository.CategoryRepository;
 import com.kookmin.lyl.module.product.domain.Product;
 import com.kookmin.lyl.module.product.domain.ProductOption;
+import com.kookmin.lyl.module.product.domain.ProductOptionType;
 import com.kookmin.lyl.module.product.dto.*;
 import com.kookmin.lyl.module.product.repository.ProductOptionRepository;
 import com.kookmin.lyl.module.product.repository.ProductRepository;
@@ -115,7 +116,7 @@ public class ProductServiceImpl implements ProductService{
 
         ProductOption productOption = ProductOption.builder()
                 .option(productOptionInfo.getOption())
-                .type(productOptionInfo.getType())
+                .type(ProductOptionType.valueOf(productOptionInfo.getType()))
                 .product(product)
                 .build();
 
@@ -131,7 +132,7 @@ public class ProductServiceImpl implements ProductService{
 
         productOption.editProductOption(
                 productOptionEditInfo.getOption(),
-                productOptionEditInfo.getType()
+                ProductOptionType.valueOf(productOptionEditInfo.getType())
         );
     }
 

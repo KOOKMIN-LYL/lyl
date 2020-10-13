@@ -9,6 +9,6 @@ import javax.persistence.*;
 @Data
 public class ProductOptionCreateInfo {
     private String option;
-    private ProductOptionType type;
+    private String type;
     private Long productNumber;
 }

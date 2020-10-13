@@ -7,6 +7,6 @@ import lombok.Data;
 public class ProductOptionEditInfo {
     private Long id;
     private String option;
-    private ProductOptionType type;
+    private String type;
     private Long productNumber;
 }

@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,6 +30,8 @@ class ProductServiceImplTest {
     @Autowired private ShopRepository shopRepository;
     @Autowired private CategoryRepository categoryRepository;
     @Autowired private ProductRepository productRepository;
+    @PersistenceContext
+    EntityManager entityManager;
 
     private Long shopNumber;
     private Long categoryId;
@@ -145,7 +149,7 @@ class ProductServiceImplTest {
     @DisplayName("addProductOption_성공_테스트")
     public void test_addProductOption_success() {
         ProductOptionCreateInfo productOptionCreateInfo = new ProductOptionCreateInfo();
-        productOptionCreateInfo.setType(ProductOptionType.SIZE);
+        productOptionCreateInfo.setType(ProductOptionType.SIZE.toString());
         productOptionCreateInfo.setOption("옵션1");
         productOptionCreateInfo.setProductNumber(firstProduct);
 
@@ -153,11 +157,38 @@ class ProductServiceImplTest {
         ProductOptionDetails result = productService.findProductOption(productOptionId);
 
         assertThat(result)
-                .hasFieldOrPropertyWithValue("type", productOptionCreateInfo.getType().toString())
+                .hasFieldOrPropertyWithValue("type", productOptionCreateInfo.getType())
                 .hasFieldOrPropertyWithValue("id", productOptionId)
                 .hasFieldOrPropertyWithValue("option", productOptionCreateInfo.getOption())
                 .hasFieldOrPropertyWithValue("productNumber", productOptionCreateInfo.getProductNumber());
+    }
 
+    @Test
+    @DisplayName("editProductOption_성공_테스트")
+    public void test_editProductOption_success() {
+        ProductOptionCreateInfo productOptionCreateInfo = new ProductOptionCreateInfo();
+        productOptionCreateInfo.setType(ProductOptionType.SIZE.toString());
+        productOptionCreateInfo.setOption("옵션1");
+        productOptionCreateInfo.setProductNumber(firstProduct);
 
+        Long productOptionId = productService.addProductOption(productOptionCreateInfo);
+
+        ProductOptionEditInfo productOptionEditInfo = new ProductOptionEditInfo();
+        productOptionEditInfo.setId(productOptionId);
+        productOptionEditInfo.setOption("옵션1 수정");
+        productOptionEditInfo.setType(ProductOptionType.ETC.toString());
+        productOptionEditInfo.setProductNumber(firstProduct);
+
+        entityManager.flush(); entityManager.clear();
+
+        productService.editProductOption(productOptionEditInfo);
+
+        ProductOptionDetails result = productService.findProductOption(productOptionId);
+
+        assertThat(result)
+                .hasFieldOrPropertyWithValue("type", productOptionEditInfo.getType())
+                .hasFieldOrPropertyWithValue("id", productOptionEditInfo.getId())
+                .hasFieldOrPropertyWithValue("option", productOptionEditInfo.getOption())
+                .hasFieldOrPropertyWithValue("productNumber", productOptionEditInfo.getProductNumber());
     }
 }
