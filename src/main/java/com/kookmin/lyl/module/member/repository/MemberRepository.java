@@ -8,8 +8,9 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Member save(Member member);
-    List<Member> findByMemberId(String memberId);
+    Member findMemberByMemberId(String memberId);   // 한 사람만
+    Member findByMemberId(String memberId);   // 여러 사람. 이런 아이디로 사람이 있는지 보려는 거였다. -> 다르게 바꿀 수 있을 거 같은데
     List<Member> findByMemberName(String memberName);
-    List<Member> findByEmail(String email);
+    Member findByEmail(String email);
 
 }

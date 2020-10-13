@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class MemberDetails {
     // 멤버의 세부정보를 가져오기
     // 그래도 비밀번호는 가져오면 안되겠지

@@ -49,7 +49,7 @@ public class Member {
     private MemberType memberType;
 
     @Builder
-    public Member(String memberName, String memberId, String password, String address, String phone, String email) {
+    public Member(Long usn,String memberName, String memberId, String password, String address, String phone, String email) {
         this.memberName = memberName;
         this.memberId = memberId;
         this.address = address;
@@ -58,6 +58,7 @@ public class Member {
         this.email = email;
         this.status = MemberStatus.ACTIVE;
         this.memberType = MemberType.USER;
+        this.usn=usn;
     }
 
     // 이름 수정 부분
