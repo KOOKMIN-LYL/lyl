@@ -20,6 +20,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -190,5 +192,25 @@ class ProductServiceImplTest {
                 .hasFieldOrPropertyWithValue("id", productOptionEditInfo.getId())
                 .hasFieldOrPropertyWithValue("option", productOptionEditInfo.getOption())
                 .hasFieldOrPropertyWithValue("productNumber", productOptionEditInfo.getProductNumber());
+    }
+
+    @Test
+    @DisplayName("deleteProductOption_성공_테스트")
+    public void test_deleteProductOption_success() {
+        ProductOptionCreateInfo productOptionCreateInfo = new ProductOptionCreateInfo();
+        productOptionCreateInfo.setType(ProductOptionType.SIZE.toString());
+        productOptionCreateInfo.setOption("옵션1");
+        productOptionCreateInfo.setProductNumber(firstProduct);
+
+        Long productOptionId = productService.addProductOption(productOptionCreateInfo);
+
+        entityManager.flush(); entityManager.clear();
+
+        List<ProductOptionDetails> result = productService.findProductOptions(firstProduct);
+
+        productService.deleteProductOption(firstProduct, productOptionId);
+
+        assertThat(productService.findProductOptions(firstProduct).size())
+                .isEqualTo(result.size() -1);
     }
 }
