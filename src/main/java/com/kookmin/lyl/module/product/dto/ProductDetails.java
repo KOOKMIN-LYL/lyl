@@ -1,10 +1,13 @@
 package com.kookmin.lyl.module.product.dto;
 
 import com.kookmin.lyl.module.product.domain.Product;
+import com.kookmin.lyl.module.product.domain.ProductOption;
 import com.kookmin.lyl.module.product.domain.ProductStatus;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,6 +20,7 @@ public class ProductDetails {
     private ProductStatus status;
     private Long categoryId;
     private Long shopId;
+    private List<ProductOptionDetails> productOptionDetails;
 
     @QueryProjection
     public ProductDetails(Long productNumber, String name, Integer price, String manufacturer, String origin,

@@ -33,6 +33,7 @@ public class ProductServiceImpl implements ProductService{
     public Long createProduct(@NonNull ProductCreateInfo productCreateInfo) {
         Shop shop = shopRepository.findById(productCreateInfo.getShopId())
                 .orElseThrow(EntityNotFoundException::new);
+
         Category category = categoryRepository.findById(productCreateInfo.getCategoryId())
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -85,7 +86,18 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductDetails findProduct(@NonNull Long productNumber) {
         Product product = productRepository.findById(productNumber).orElseThrow(EntityNotFoundException::new);
-        return new ProductDetails(product);
+        List<ProductOption> productOptions = productOptionRepository.findByProductNumber(product.getProductNumber());
+
+        ProductDetails productDetails = new ProductDetails(product);
+        List<ProductOptionDetails> productOptionDetails = new ArrayList<ProductOptionDetails>();
+
+        for(ProductOption productOption : productOptions) {
+            productOptionDetails.add(new ProductOptionDetails(productOption));
+        }
+
+        productDetails.setProductOptionDetails(productOptionDetails);
+
+        return productDetails;
     }
 
     @Override
