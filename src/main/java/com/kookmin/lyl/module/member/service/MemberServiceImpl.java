@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void validateDuplicateMember(String id, String email, MemberJoin memberJoin) {   // 중복 검사 -> 동명이인은 있을 수 있으나, id, email 는 유일해야 한다.
+    public void validateDuplicateMember(@NonNull String id, @NonNull String email, @NonNull MemberJoin memberJoin) {   // 중복 검사 -> 동명이인은 있을 수 있으나, id, email 는 유일해야 한다.
         // MemberId 로 검사
         if(memberRepository.findByMemberId(id) != null) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
@@ -58,17 +58,25 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public List<Member> findMembers() { return memberRepository.findAll(); }    // 모든 멤버를 다져오는 방법
+    public List<Member> findMembers() {
+        return memberRepository.findAll();
+    }    // 모든 멤버를 다져오는 방법
 
     @Override
-    public Member findByMemberId(String id){ return memberRepository.findByMemberId(id); }  // id로 검색
+    public Member findByMemberId(@NonNull String id){
+        return memberRepository.findByMemberId(id);
+    }  // id로 검색
 
     @Override
-    public List<Member> findByMemberName(String name) {return memberRepository.findByMemberName(name);} // 이름으로 검색
+    public List<Member> findByMemberName(@NonNull String name) {
+        return memberRepository.findByMemberName(name);
+    } // 이름으로 검색
 
     @Override
-    public Member findByEmail(String email) { return  memberRepository.findByEmail(email);} // email 로 검색
-    
+    public Member findByEmail(@NonNull String email) {
+        return  memberRepository.findByEmail(email);
+    } // email 로 검색
+
     @Override
     public void editProfile(@NonNull String id, @NonNull String password, @NonNull MemberPasswordCheck memberPasswordCheck, @NonNull MemberEditInfo memberEditInfo){
 
