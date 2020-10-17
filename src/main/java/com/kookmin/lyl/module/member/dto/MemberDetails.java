@@ -4,7 +4,6 @@ import com.kookmin.lyl.module.member.domain.Member;
 import com.kookmin.lyl.module.member.domain.MemberStatus;
 import com.kookmin.lyl.module.member.domain.MemberType;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class MemberDetails {
@@ -19,7 +18,7 @@ public class MemberDetails {
     private MemberType memberType;  // 관리자니 유저니?
     private MemberStatus memberStatus;
 
-    // get으로 가져온다
+    // get 으로 가져온다
     public MemberDetails(Member member) {
         this.memberName = member.getMemberName();
         this.memberId = member.getMemberId();
