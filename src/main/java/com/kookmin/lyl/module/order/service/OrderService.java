@@ -2,34 +2,18 @@ package com.kookmin.lyl.module.order.service;
 
 import com.kookmin.lyl.module.member.domain.Member;
 import com.kookmin.lyl.module.order.domain.Order;
-import com.kookmin.lyl.module.order.domain.OrderProduct;
-import com.kookmin.lyl.module.order.domain.OrderStatus;
-import com.kookmin.lyl.module.order.repository.OrderProductRepository;
-import com.kookmin.lyl.module.order.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.kookmin.lyl.module.order.domain.OrderType;
+import com.kookmin.lyl.module.order.dto.*;
+import com.kookmin.lyl.module.product.domain.Product;
+import com.kookmin.lyl.module.product.domain.ProductOption;
 
-import java.util.Date;
+import java.util.List;
 
-@Service
-@Transactional
-public class OrderService {
-    @Autowired OrderRepository orderRepository;
-    @Autowired OrderProductRepository orderProductRepository;
-
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
-    //==생성 메서드==//
-    public static Order createOrder(Member member, OrderProduct... orderProducts) {
-
-        Order order = new Order();
-        for (OrderProduct orderProduct : orderProducts) {
-            order.addOrderProduct(orderProduct);
-        }
-        order.setStatus(OrderStatus.PENDING);
-        return order;
-    }
+public interface OrderService {
+    public void orderProductWish(Order order, OrderProductCreate orderProductCreate);
+    public void orderProductCart(Order order, OrderProductCreate orderProductCreate, List<ProductOption> productOptions)
+    public void orderCreate(OrderCreate orderCreate);
+    public void cartToDealed(OrderCartToDealed orderCartToDealed, OrderMemberOrderType orderMemberOrderType);
+    public void orderProductCreate(OrderProductCreate orderProductCreate, Product product);
+    public List<OrderDetail> findByMemberIdAndOrderType(OrderMemberOrderType orderMemberOrderType);
 }
