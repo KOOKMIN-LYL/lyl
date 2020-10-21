@@ -6,6 +6,8 @@ import com.kookmin.lyl.module.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -13,7 +15,7 @@ public class MemberService {
 
     public Long join(MemberCreateInfo memberCreateInfo) {
         Member member = Member.builder()
-                .id(memberCreateInfo.getId())
+                .memberId(memberCreateInfo.getId())
                 .password(memberCreateInfo.getPassword())
                 .name(memberCreateInfo.getName())
                 .address(memberCreateInfo.getAddress())
@@ -24,6 +26,14 @@ public class MemberService {
         member = memberRepository.save(member);
 
         return member.getUsn();
+    }
+
+    public boolean validateDuplicateMember(String memberId) {
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(EntityNotFoundException::new);
+
+        if(member != null) return true;
+
+        return false;
     }
 
 
