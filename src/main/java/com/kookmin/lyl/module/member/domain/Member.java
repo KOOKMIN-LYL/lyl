@@ -53,8 +53,14 @@ public class Member {
         this.memberType = MemberType.USER;
     }
 
+    public void editInfo(String address, String phone, String email) {
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+    }
+
     public void editName(String name) {
         this.name = name;
     }
-
+    public void editPassword(String password) { this.password = password; }
 }
