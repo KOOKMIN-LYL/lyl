@@ -60,6 +60,7 @@ public class MemberService {
     }
 
     public void removeMember(Long usn) {
-        memberRepository.deleteById(usn);
+        Member member = memberRepository.findById(usn).orElseThrow(EntityNotFoundException::new);
+        member.expireMember();
     }
 }

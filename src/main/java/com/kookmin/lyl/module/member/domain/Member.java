@@ -63,4 +63,5 @@ public class Member {
         this.name = name;
     }
     public void editPassword(String password) { this.password = password; }
+    public void expireMember() { this.status = MemberStatus.EXPIRED; }
 }
