@@ -2,6 +2,7 @@ package com.kookmin.lyl.module.member.service;
 
 import com.kookmin.lyl.module.member.domain.Member;
 import com.kookmin.lyl.module.member.dto.MemberCreateInfo;
+import com.kookmin.lyl.module.member.dto.MemberDetails;
 import com.kookmin.lyl.module.member.dto.MemberEditInfo;
 import com.kookmin.lyl.module.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +54,8 @@ public class MemberService {
         member.editPassword(newPassword);
     }
 
-
+    public MemberDetails findMember(Long usn) {
+        Member member = memberRepository.findById(usn).orElseThrow(EntityNotFoundException::new);
+        return new MemberDetails(member);
+    }
 }
