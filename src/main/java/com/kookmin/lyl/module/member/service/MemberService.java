@@ -58,4 +58,8 @@ public class MemberService {
         Member member = memberRepository.findById(usn).orElseThrow(EntityNotFoundException::new);
         return new MemberDetails(member);
     }
+
+    public void removeMember(Long usn) {
+        memberRepository.deleteById(usn);
+    }
 }
