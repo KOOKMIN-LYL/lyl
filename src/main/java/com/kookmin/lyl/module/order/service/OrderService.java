@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 @Transactional
@@ -77,7 +78,17 @@ public class OrderService {
 
     public OrderDetails findOrder(@NonNull String memberId) {
         Order order = orderRepository.findByMemberIdAndOrderType(memberId, OrderType.ORDER.toString());
-        return null;
+
+        if(order == null) {
+            throw new RuntimeException();
+        }
+
+        OrderDetails orderDetails = new OrderDetails(order);
+
+        List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(order.getId());
+        orderDetails.setOrderProducts(orderProducts);
+
+        return orderDetails;
     }
 
     public void cancelOrderProduct(@NonNull Long orderProductId) {
