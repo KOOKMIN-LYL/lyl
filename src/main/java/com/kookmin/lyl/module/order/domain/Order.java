@@ -34,13 +34,10 @@ public class Order {
     @Column(name = "ORDER_TYPE")
     private  OrderType orderType;
 
-    // N:1 의 관계. 1명의 Member는 여러 Order을 한다
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    // 1:N 의 관계. 1개의 Order에는 1개 이상의 product들이 있다
-    // 여러 개의 product들을 List로 가져온다
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderProduct> orderProducts = new ArrayList<OrderProduct>();
 

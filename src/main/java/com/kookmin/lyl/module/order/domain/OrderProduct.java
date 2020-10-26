@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,6 +16,9 @@ public class OrderProduct {
     @Column(name = "ORDER_PRODUCT_ID")
     private Long id;
 
+    @Column(name = "PRODUCT_ID")
+    private Long productId;
+
     @Column(name = "PRODUCT_NAME")
     private String productName;
 
@@ -24,9 +28,10 @@ public class OrderProduct {
     @Column(name = "QUANTITY")
     private int quantity;
 
-    // 1:N 인 관계 연결 부분
+    @Column(name = "PRODUCT_OPTION")
+    private String productOptions;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    // ORDER_ID 를 기준으로
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
