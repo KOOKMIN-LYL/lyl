@@ -4,7 +4,9 @@ import com.kookmin.lyl.module.member.domain.Member;
 import com.kookmin.lyl.module.member.repository.MemberRepository;
 import com.kookmin.lyl.module.order.domain.Order;
 import com.kookmin.lyl.module.order.domain.OrderProduct;
+import com.kookmin.lyl.module.order.domain.OrderStatus;
 import com.kookmin.lyl.module.order.domain.OrderType;
+import com.kookmin.lyl.module.order.dto.OrderDetails;
 import com.kookmin.lyl.module.order.repository.OrderProductRepository;
 import com.kookmin.lyl.module.order.repository.OrderRepository;
 import com.kookmin.lyl.module.product.domain.Product;
@@ -14,10 +16,12 @@ import com.kookmin.lyl.module.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
@@ -58,5 +62,25 @@ public class OrderService {
         } else {
             orderProduct.increaseQuantity();
         }
+    }
+
+    public void order(@NonNull Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+        order.editOrderType(OrderType.ORDER);
+        order.editOrderStatus(OrderStatus.PENDING);
+    }
+
+    public void cancelOrder(@NonNull Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+        order.editOrderType(OrderType.CANCELED);
+    }
+
+    public OrderDetails findOrder(@NonNull String memberId) {
+        Order order = orderRepository.findByMemberIdAndOrderType(memberId, OrderType.ORDER.toString());
+        return null;
+    }
+
+    public void cancelOrderProduct(@NonNull Long orderProductId) {
+        orderProductRepository.deleteById(orderProductId);
     }
 }

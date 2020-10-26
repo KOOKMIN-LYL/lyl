@@ -49,4 +49,11 @@ public class Order {
         this.member = member;
     }
 
+    public void editOrderStatus(OrderStatus orderStatus) {
+        this.status = orderStatus;
+    }
+
+    public void editOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
 }
