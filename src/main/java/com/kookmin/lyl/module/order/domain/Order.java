@@ -1,6 +1,7 @@
 package com.kookmin.lyl.module.order.domain;
 
 import com.kookmin.lyl.module.member.domain.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,5 +41,12 @@ public class Order {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderProduct> orderProducts = new ArrayList<OrderProduct>();
+
+    @Builder
+    public Order(OrderType orderType, Member member) {
+        this.status = OrderStatus.READY;
+        this.orderType = orderType;
+        this.member = member;
+    }
 
 }

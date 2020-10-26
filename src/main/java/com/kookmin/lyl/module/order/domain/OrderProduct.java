@@ -1,6 +1,7 @@
 package com.kookmin.lyl.module.order.domain;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,9 @@ public class OrderProduct {
     @Column(name = "PRODUCT_ID")
     private Long productId;
 
+    @Column(name = "PRODUCT_OPTION_ID")
+    private Long productOptionId;
+
     @Column(name = "PRODUCT_NAME")
     private String productName;
 
@@ -35,4 +39,18 @@ public class OrderProduct {
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
+    @Builder
+    public OrderProduct(Long productId, Long productOptionId, String productName, int productPrice, int quantity,
+                        String productOptions) {
+        this.productId = productId;
+        this.productOptionId = productOptionId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.quantity = quantity;
+        this.productOptions = productOptions;
+    }
+
+    public void increaseQuantity() {
+        this.quantity++;
+    }
 }
