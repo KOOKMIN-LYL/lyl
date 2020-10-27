@@ -1,8 +1,10 @@
 package com.kookmin.lyl.web;
 
+import com.kookmin.lyl.module.order.dto.OrderDetails;
 import com.kookmin.lyl.module.order.dto.OrderProductInfo;
 import com.kookmin.lyl.module.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +22,8 @@ public class OrderController {
         return "ok";
     }
 
-
+    @GetMapping(value = "/cart")
+    public OrderDetails getCart(Principal principal) {
+        return orderService.findCartOrderDetails(principal.getName());
+    }
 }

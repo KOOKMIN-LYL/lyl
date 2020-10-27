@@ -115,7 +115,17 @@ public class OrderService {
 
     public OrderDetails findOrderDetails(@NonNull Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
-        List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(orderId);
+        List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(order.getId());
+
+        OrderDetails orderDetails = new OrderDetails(order);
+        orderDetails.setOrderProducts(orderProducts);
+
+        return  orderDetails;
+    }
+
+    public OrderDetails findCartOrderDetails(@NonNull String memberId) {
+        Order order = orderRepository.findByMemberMemberIdAndOrderType(memberId, OrderType.CART.toString()).get(0);
+        List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(order.getId());
 
         OrderDetails orderDetails = new OrderDetails(order);
         orderDetails.setOrderProducts(orderProducts);
