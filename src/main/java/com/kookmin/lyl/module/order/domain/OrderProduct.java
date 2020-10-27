@@ -52,8 +52,8 @@ public class OrderProduct {
         eidtOrder(order);
     }
 
-    public void increaseQuantity() {
-        this.quantity++;
+    public void increaseQuantity(int quantity) {
+        this.quantity += quantity;
     }
 
     public void eidtOrder(Order order) {

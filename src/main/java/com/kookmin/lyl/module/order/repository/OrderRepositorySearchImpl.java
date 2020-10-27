@@ -1,6 +1,7 @@
 package com.kookmin.lyl.module.order.repository;
 
 import com.kookmin.lyl.infra.support.LylQuerydslRepositorySupport;
+import com.kookmin.lyl.module.member.domain.QMember;
 import com.kookmin.lyl.module.order.domain.Order;
 import com.kookmin.lyl.module.order.domain.OrderStatus;
 import com.kookmin.lyl.module.order.domain.OrderType;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import static com.kookmin.lyl.module.member.domain.QMember.member;
 import static com.kookmin.lyl.module.order.domain.QOrder.*;
 import static com.kookmin.lyl.module.product.domain.QProduct.product;
 
@@ -44,6 +46,16 @@ public class OrderRepositorySearchImpl extends LylQuerydslRepositorySupport impl
                         orderStatusEq(condition.getOrderStatus()),
                         orderTypeEq(condition.getOrderType()))
                 );
+    }
+
+    @Override
+    public Order findCartByMemberMemberIdAndOrderType(String memberId, String orderType) {
+        return getQueryFactory()
+                .selectFrom(order)
+                .leftJoin(order.member, member)
+                .where(member.memberId.eq(memberId),
+                        order.orderType.eq(OrderType.valueOf(orderType)))
+                .fetchOne();
     }
 
     public BooleanExpression orderIdEq(Long orderId) {

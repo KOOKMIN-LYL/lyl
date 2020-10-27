@@ -1,15 +1,9 @@
 package com.kookmin.lyl.module.order.dto;
 
-import com.kookmin.lyl.module.member.domain.Member;
 import com.kookmin.lyl.module.order.domain.Order;
-import com.kookmin.lyl.module.order.domain.OrderProduct;
-import com.kookmin.lyl.module.order.domain.OrderStatus;
-import com.kookmin.lyl.module.order.domain.OrderType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
-import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,7 +14,7 @@ public class OrderDetails {
     private String request;
     private String orderStatus;
     private String orderType;
-    private List<OrderProduct> orderProducts;
+    private List<OrderProductDetails> orderProducts;
 
     public OrderDetails(Order order) {
         this.id = order.getId();

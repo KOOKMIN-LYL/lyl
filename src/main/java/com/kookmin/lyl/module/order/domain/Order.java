@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="ORDER")
+@Table(name="ORDERS")
 public class Order {
     @Id @GeneratedValue
     @Column(name = "ORDER_ID")
@@ -36,7 +36,7 @@ public class Order {
     private  OrderType orderType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "USN")
     private Member member;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
