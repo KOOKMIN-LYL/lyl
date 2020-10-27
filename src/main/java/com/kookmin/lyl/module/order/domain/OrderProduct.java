@@ -1,10 +1,13 @@
 package com.kookmin.lyl.module.order.domain;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,6 +18,12 @@ public class OrderProduct {
     @Column(name = "ORDER_PRODUCT_ID")
     private Long id;
 
+    @Column(name = "PRODUCT_ID")
+    private Long productId;
+
+    @Column(name = "PRODUCT_OPTION_ID")
+    private Long productOptionId;
+
     @Column(name = "PRODUCT_NAME")
     private String productName;
 
@@ -24,10 +33,32 @@ public class OrderProduct {
     @Column(name = "QUANTITY")
     private int quantity;
 
-    // 1:N 인 관계 연결 부분
+    @Column(name = "PRODUCT_OPTION")
+    private String productOptions;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    // ORDER_ID 를 기준으로
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
+    @Builder
+    public OrderProduct(Long productId, Long productOptionId, String productName, int productPrice, int quantity,
+                        String productOptions, Order order) {
+        this.productId = productId;
+        this.productOptionId = productOptionId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.quantity = quantity;
+        this.productOptions = productOptions;
+        eidtOrder(order);
+    }
+
+    public void increaseQuantity() {
+        this.quantity++;
+    }
+
+    public void eidtOrder(Order order) {
+        if(order != null) {
+            this.order = order;
+        }
+    }
 }
