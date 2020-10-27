@@ -4,9 +4,7 @@ import com.kookmin.lyl.module.order.dto.OrderDetails;
 import com.kookmin.lyl.module.order.dto.OrderProductInfo;
 import com.kookmin.lyl.module.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -25,5 +23,17 @@ public class OrderController {
     @GetMapping(value = "/cart")
     public OrderDetails getCart(Principal principal) {
         return orderService.findCartOrderDetails(principal.getName());
+    }
+
+    @DeleteMapping(value = "/cart/product")
+    public String deleteProductFromCart(Long orderProductId) {
+        orderService.cancelOrderProduct(orderProductId);
+
+        return "ok";
+    }
+
+    @GetMapping(value = "/order/{orderId}")
+    public OrderDetails getOrderDetail(@PathVariable("orderId") Long orderId) {
+        return orderService.findOrderDetails(orderId);
     }
 }
