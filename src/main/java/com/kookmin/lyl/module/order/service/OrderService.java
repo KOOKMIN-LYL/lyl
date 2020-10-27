@@ -12,7 +12,6 @@ import com.kookmin.lyl.module.order.repository.OrderProductRepository;
 import com.kookmin.lyl.module.order.repository.OrderRepository;
 import com.kookmin.lyl.module.product.domain.Product;
 import com.kookmin.lyl.module.product.domain.ProductOption;
-import com.kookmin.lyl.module.product.dto.ProductSearchCondition;
 import com.kookmin.lyl.module.product.repository.ProductOptionRepository;
 import com.kookmin.lyl.module.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -80,10 +79,18 @@ public class OrderService {
         order.editOrderType(OrderType.CANCELED);
     }
 
-    public Page<OrderDetails> findOrderList(@NonNull Pageable pageable, @NonNull OrderSearchCondition searchCondition) {
-        List<Order> orders;
+    public Page<OrderDetails> searchOrderList(@NonNull Pageable pageable, @NonNull OrderSearchCondition searchCondition) {
+        return orderRepository.searchOrderDetails(pageable, searchCondition);
+    }
 
-        return null;
+    public OrderDetails findOrderDetails(@NonNull Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+        List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(orderId);
+
+        OrderDetails orderDetails = new OrderDetails(order);
+        orderDetails.setOrderProducts(orderProducts);
+
+        return  orderDetails;
     }
 
     public void cancelOrderProduct(@NonNull Long orderProductId) {
