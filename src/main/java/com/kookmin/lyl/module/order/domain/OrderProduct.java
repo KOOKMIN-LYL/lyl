@@ -27,7 +27,7 @@ public class OrderProduct {
     private boolean isChecked;      // default = 1 : 체크가 된 상태
 
     @Column
-    private List<ProductOption> orderProductOptions  = new ArrayList<ProductOption>();
+    private List<ProductOption> orderProductOptions;
 
     @Column(name = "ORDER_PRODUCT_OPTION")
     private String option;
@@ -66,11 +66,12 @@ public class OrderProduct {
 
     // 생성부
     @Builder
-    public static OrderProduct createOrderProduct(int quantity, Product product, ProductOption... productOptions){
+    public static OrderProduct createOrderProduct(int quantity, Product product, String option, ProductOption... productOptions){
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setQuantity(quantity); // 수량
         orderProduct.setProductPrice(product.getPrice());   // 가격 가져오고
         orderProduct.setProductName(product.getName()); // 상품 이름 가져오고
+        orderProduct.setOption(option);
         orderProduct.setProductNumber(product.getProductNumber());  // 상품 번호 가져오고
         for(ProductOption productOption : productOptions){
             orderProduct.addOrderProductOption(productOption);

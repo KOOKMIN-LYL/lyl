@@ -14,5 +14,6 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Long
     List<OrderProduct> findByProductPriceLessThanOrderByProductPriceDesc(int price); // 일정 금액 이하 (내림순)
     // TODO: 이게 아닌 거 같은데 조건만 따로 빼서 하는게 있지 않았나
     List<OrderProduct> findAllOrderByProductPrice();
+    List<OrderProduct> findByOrderId(Long orderId);
 
 }
