@@ -7,6 +7,7 @@ import com.kookmin.lyl.module.order.domain.OrderProduct;
 import com.kookmin.lyl.module.order.domain.OrderStatus;
 import com.kookmin.lyl.module.order.domain.OrderType;
 import com.kookmin.lyl.module.order.dto.OrderDetails;
+import com.kookmin.lyl.module.order.dto.OrderProductInfo;
 import com.kookmin.lyl.module.order.dto.OrderSearchCondition;
 import com.kookmin.lyl.module.order.repository.OrderProductRepository;
 import com.kookmin.lyl.module.order.repository.OrderRepository;
@@ -34,10 +35,10 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
 
-    public void addCart(@NonNull String memberId, @NonNull Long productId, @NonNull Long productOptionId) {
+    public void addCart(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
         Order order = orderRepository.findByMemberIdAndOrderType(memberId, OrderType.CART.toString()).get(0);
-        Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
-        ProductOption productOption = productOptionRepository.findById(productOptionId)
+        Product product = productRepository.findById(orderProductInfo.getProductId()).orElseThrow(EntityNotFoundException::new);
+        ProductOption productOption = productOptionRepository.findById(orderProductInfo.getProductOptionId())
                 .orElseThrow(EntityNotFoundException::new);
 
         if(order == null) {
@@ -52,16 +53,16 @@ public class OrderService {
         }
 
         OrderProduct orderProduct =
-                orderProductRepository.findByOrderIdAndProductIdAndProductOptionId(order.getId(), productId, productOptionId);
+                orderProductRepository.findByOrderIdAndProductIdAndProductOptionId(order.getId(), product.getId(), productOption.getId());
 
         if(orderProduct == null) {
             orderProduct = OrderProduct.builder()
-                    .productId(productId)
+                    .productId(product.getId())
                     .productName(product.getName())
-                    .productOptionId(productOptionId)
+                    .productOptionId(productOption.getId())
                     .productOptions(productOption.getOption())
                     .productPrice(product.getPrice())
-                    .quantity(1)
+                    .quantity(orderProductInfo.getQuantity())
                     .build();
         } else {
             orderProduct.increaseQuantity();
@@ -74,9 +75,10 @@ public class OrderService {
         order.editOrderStatus(OrderStatus.PENDING);
     }
 
-    public void orderProduct(@NonNull String memberId, @NonNull Long productId, @NonNull Long productOptionId) {
-        Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
-        ProductOption productOption = productOptionRepository.findById(productOptionId).orElseThrow(EntityNotFoundException::new);
+    public void orderProduct(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
+        Product product = productRepository.findById(orderProductInfo.getProductId()).orElseThrow(EntityNotFoundException::new);
+        ProductOption productOption = productOptionRepository.findById(orderProductInfo.getProductOptionId())
+                .orElseThrow(EntityNotFoundException::new);
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(EntityNotFoundException::new);
 
         Order order = Order.builder()
@@ -84,8 +86,8 @@ public class OrderService {
                 .orderType(OrderType.ORDER)
                 .build();
 
-        order.editDeliveryAddress();
-        order.editRequest();
+        order.editDeliveryAddress(orderProductInfo.getDeliveryAddress());
+        order.editRequest(orderProductInfo.getRequest());
 
         order = orderRepository.save(order);
 
@@ -96,7 +98,7 @@ public class OrderService {
                 .productOptionId(productOption.getId())
                 .productOptions(productOption.getOption())
                 .productPrice(product.getPrice())
-                .quantity(1)
+                .quantity(orderProductInfo.getQuantity())
                 .build();
 
         orderProduct = orderProductRepository.save(orderProduct);
