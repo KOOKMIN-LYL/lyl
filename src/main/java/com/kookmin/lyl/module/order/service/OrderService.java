@@ -36,7 +36,7 @@ public class OrderService {
     private final ProductOptionRepository productOptionRepository;
 
     public void addCart(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
-        Order order = orderRepository.findByMemberIdAndOrderType(memberId, OrderType.CART.toString()).get(0);
+        Order order = orderRepository.findByMemberMemberIdAndOrderType(memberId, OrderType.CART.toString()).get(0);
         Product product = productRepository.findById(orderProductInfo.getProductId()).orElseThrow(EntityNotFoundException::new);
         ProductOption productOption = productOptionRepository.findById(orderProductInfo.getProductOptionId())
                 .orElseThrow(EntityNotFoundException::new);
