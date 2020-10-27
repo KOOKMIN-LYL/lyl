@@ -56,4 +56,17 @@ public class Order {
     public void editOrderType(OrderType orderType) {
         this.orderType = orderType;
     }
+
+    public void editTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void editDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public void editRequest(String request) {
+        this.request = request;
+    }
+
 }

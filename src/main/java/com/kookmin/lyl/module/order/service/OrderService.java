@@ -68,10 +68,38 @@ public class OrderService {
         }
     }
 
-    public void order(@NonNull Long orderId) {
+    public void orderCart(@NonNull Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
         order.editOrderType(OrderType.ORDER);
         order.editOrderStatus(OrderStatus.PENDING);
+    }
+
+    public void orderProduct(@NonNull String memberId, @NonNull Long productId, @NonNull Long productOptionId) {
+        Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
+        ProductOption productOption = productOptionRepository.findById(productOptionId).orElseThrow(EntityNotFoundException::new);
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(EntityNotFoundException::new);
+
+        Order order = Order.builder()
+                .member(member)
+                .orderType(OrderType.ORDER)
+                .build();
+
+        order.editDeliveryAddress();
+        order.editRequest();
+
+        order = orderRepository.save(order);
+
+        OrderProduct orderProduct = OrderProduct.builder()
+                .order(order)
+                .productId(product.getId())
+                .productName(product.getName())
+                .productOptionId(productOption.getId())
+                .productOptions(productOption.getOption())
+                .productPrice(product.getPrice())
+                .quantity(1)
+                .build();
+
+        orderProduct = orderProductRepository.save(orderProduct);
     }
 
     public void cancelOrder(@NonNull Long orderId) {

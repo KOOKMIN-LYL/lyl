@@ -4,6 +4,7 @@ package com.kookmin.lyl.module.order.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.util.List;
@@ -41,16 +42,23 @@ public class OrderProduct {
 
     @Builder
     public OrderProduct(Long productId, Long productOptionId, String productName, int productPrice, int quantity,
-                        String productOptions) {
+                        String productOptions, Order order) {
         this.productId = productId;
         this.productOptionId = productOptionId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.quantity = quantity;
         this.productOptions = productOptions;
+        eidtOrder(order);
     }
 
     public void increaseQuantity() {
         this.quantity++;
+    }
+
+    public void eidtOrder(Order order) {
+        if(order != null) {
+            this.order = order;
+        }
     }
 }
