@@ -2,6 +2,7 @@ package com.kookmin.lyl.module.member.service;
 
 import com.kookmin.lyl.module.member.domain.Member;
 import com.kookmin.lyl.module.member.domain.MemberStatus;
+import com.kookmin.lyl.module.member.domain.MemberType;
 import com.kookmin.lyl.module.member.dto.MemberCreateInfo;
 import com.kookmin.lyl.module.member.dto.MemberDetails;
 import com.kookmin.lyl.module.member.dto.MemberEditInfo;
@@ -34,7 +35,7 @@ public class MemberService implements UserDetailsService {
                 .phone(memberCreateInfo.getPhone())
                 .build();
 
-
+        member.encodePassword(passwordEncoder);
 
         member = memberRepository.save(member);
 
@@ -81,7 +82,7 @@ public class MemberService implements UserDetailsService {
         return User.builder()
                 .username(member.getMemberId())
                 .password(member.getPassword())
-                .roles("USER")
+                .roles(MemberType.USER.toString())
                 .build();
     }
 }
