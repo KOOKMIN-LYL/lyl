@@ -26,15 +26,14 @@ public class ProductController {
 
     @GetMapping(value = "/category/{categoryId}")
     public Page<ProductDetails> getCategoryProducts(Pageable pageable, ProductSearchCondition searchCondition) {
-        System.out.println("PAGE: " + pageable);
-        System.out.println("CONDITION: " + searchCondition);
         Page<ProductDetails> result = productService.searchProducts(pageable, searchCondition);
 
-        for(ProductDetails pd : result.getContent()){
-            System.out.println("CONTENT: " + pd);
-        }
-
         return result;
+    }
+
+    @GetMapping(value = "/product/{productId}")
+    public ProductDetails getProductDetails(@PathVariable("productId") Long productId) {
+        return productService.findProduct(productId);
     }
 
     @PostConstruct
