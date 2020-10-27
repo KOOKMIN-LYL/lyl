@@ -5,6 +5,7 @@ import com.kookmin.lyl.module.order.domain.Order;
 import com.kookmin.lyl.module.order.domain.OrderProduct;
 import com.kookmin.lyl.module.order.domain.OrderStatus;
 import com.kookmin.lyl.module.order.domain.OrderType;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,5 +29,15 @@ public class OrderDetails {
         this.request = order.getRequest();
         this.orderStatus = order.getStatus().toString();
         this.orderType = order.getOrderType().toString();
+    }
+
+    @QueryProjection
+    public OrderDetails(Long id, int totalPrice, String deliveryAddress, String request, String orderStatus, String orderType) {
+        this.id = id;
+        this.totalPrice = totalPrice;
+        this.deliveryAddress = deliveryAddress;
+        this.request = request;
+        this.orderStatus = orderStatus;
+        this.orderType = orderType;
     }
 }

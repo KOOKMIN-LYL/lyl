@@ -7,13 +7,17 @@ import com.kookmin.lyl.module.order.domain.OrderProduct;
 import com.kookmin.lyl.module.order.domain.OrderStatus;
 import com.kookmin.lyl.module.order.domain.OrderType;
 import com.kookmin.lyl.module.order.dto.OrderDetails;
+import com.kookmin.lyl.module.order.dto.OrderSearchCondition;
 import com.kookmin.lyl.module.order.repository.OrderProductRepository;
 import com.kookmin.lyl.module.order.repository.OrderRepository;
 import com.kookmin.lyl.module.product.domain.Product;
 import com.kookmin.lyl.module.product.domain.ProductOption;
+import com.kookmin.lyl.module.product.dto.ProductSearchCondition;
 import com.kookmin.lyl.module.product.repository.ProductOptionRepository;
 import com.kookmin.lyl.module.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +36,7 @@ public class OrderService {
     private final ProductOptionRepository productOptionRepository;
 
     public void addCart(@NonNull String memberId, @NonNull Long productId, @NonNull Long productOptionId) {
-        Order order = orderRepository.findByMemberIdAndOrderType(memberId, OrderType.CART.toString());
+        Order order = orderRepository.findByMemberIdAndOrderType(memberId, OrderType.CART.toString()).get(0);
         Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
         ProductOption productOption = productOptionRepository.findById(productOptionId)
                 .orElseThrow(EntityNotFoundException::new);
@@ -76,19 +80,10 @@ public class OrderService {
         order.editOrderType(OrderType.CANCELED);
     }
 
-    public OrderDetails findOrder(@NonNull String memberId) {
-        Order order = orderRepository.findByMemberIdAndOrderType(memberId, OrderType.ORDER.toString());
+    public Page<OrderDetails> findOrderList(@NonNull Pageable pageable, @NonNull OrderSearchCondition searchCondition) {
+        List<Order> orders;
 
-        if(order == null) {
-            throw new RuntimeException();
-        }
-
-        OrderDetails orderDetails = new OrderDetails(order);
-
-        List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(order.getId());
-        orderDetails.setOrderProducts(orderProducts);
-
-        return orderDetails;
+        return null;
     }
 
     public void cancelOrderProduct(@NonNull Long orderProductId) {
