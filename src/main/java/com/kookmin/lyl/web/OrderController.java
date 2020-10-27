@@ -2,8 +2,11 @@ package com.kookmin.lyl.web;
 
 import com.kookmin.lyl.module.order.dto.OrderDetails;
 import com.kookmin.lyl.module.order.dto.OrderProductInfo;
+import com.kookmin.lyl.module.order.dto.OrderSearchCondition;
 import com.kookmin.lyl.module.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -35,5 +38,16 @@ public class OrderController {
     @GetMapping(value = "/order/{orderId}")
     public OrderDetails getOrderDetail(@PathVariable("orderId") Long orderId) {
         return orderService.findOrderDetails(orderId);
+    }
+
+    @GetMapping(value = "/order")
+    public Page<OrderDetails> getOrderDetailsList(Pageable pageable, OrderSearchCondition condition) {
+        return orderService.searchOrderList(pageable, condition);
+    }
+
+    @PostMapping(value = "/order/product")
+    public String orderProduct(OrderProductInfo orderProductInfo, Principal principal) {
+        orderService.orderProduct(principal.getName(), orderProductInfo);
+        return "ok";
     }
 }
