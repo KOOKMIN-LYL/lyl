@@ -2,8 +2,12 @@ package com.kookmin.lyl.web;
 
 import com.kookmin.lyl.module.category.domain.Category;
 import com.kookmin.lyl.module.category.repository.CategoryRepository;
+import com.kookmin.lyl.module.order.dto.OrderProductInfo;
+import com.kookmin.lyl.module.order.service.OrderService;
+import com.kookmin.lyl.module.product.domain.ProductOptionType;
 import com.kookmin.lyl.module.product.dto.ProductCreateInfo;
 import com.kookmin.lyl.module.product.dto.ProductDetails;
+import com.kookmin.lyl.module.product.dto.ProductOptionCreateInfo;
 import com.kookmin.lyl.module.product.dto.ProductSearchCondition;
 import com.kookmin.lyl.module.product.service.ProductService;
 import com.kookmin.lyl.module.shop.domain.Shop;
@@ -23,22 +27,22 @@ public class ProductController {
     private final ProductService productService;
     private final ShopRepository shopRepository;
     private final CategoryRepository categoryRepository;
+    private final OrderService orderService;
 
     @GetMapping(value = "/category/{categoryId}")
     public Page<ProductDetails> getCategoryProducts(Pageable pageable, ProductSearchCondition searchCondition) {
-        System.out.println("PAGE: " + pageable);
-        System.out.println("CONDITION: " + searchCondition);
         Page<ProductDetails> result = productService.searchProducts(pageable, searchCondition);
-
-        for(ProductDetails pd : result.getContent()){
-            System.out.println("CONTENT: " + pd);
-        }
 
         return result;
     }
 
+    @GetMapping(value = "/product/{productId}")
+    public ProductDetails getProductDetails(@PathVariable("productId") Long productId) {
+        return productService.findProduct(productId);
+    }
+
     @PostConstruct
-    public void setUpDummyData() {
+    public void setUpProduct() {
         Shop shop = new Shop();
         shop = shopRepository.save(shop);
 
@@ -58,7 +62,26 @@ public class ProductController {
             productCreateInfo.setOrigin("원산지"+i);
             productCreateInfo.setPrice(i*100);
 
-            productService.createProduct(productCreateInfo);
+            ProductOptionCreateInfo productOptionCreateInfo = new ProductOptionCreateInfo();
+
+            Long id = productService.createProduct(productCreateInfo);
+            productOptionCreateInfo.setProductNumber(id);
+            productOptionCreateInfo.setOption("옵션" + i);
+            productOptionCreateInfo.setType(ProductOptionType.SIZE.toString());
+            productService.addProductOption(productOptionCreateInfo);
         }
+
+        OrderProductInfo orderProductInfo = new OrderProductInfo();
+        orderProductInfo.setProductId(4L);
+        orderProductInfo.setProductOptionId(5L);
+        orderProductInfo.setQuantity(5);
+        orderProductInfo.setDeliveryAddress("address");
+        orderProductInfo.setRequest("request");
+
+        System.out.println("ORDER : " + orderService.addCart("user", orderProductInfo));
+
+        orderProductInfo.setQuantity(4);
+
+        orderService.addCart("user", orderProductInfo);
     }
 }

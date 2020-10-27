@@ -3,6 +3,7 @@ package com.kookmin.lyl.module.member.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -64,4 +65,8 @@ public class Member {
     }
     public void editPassword(String password) { this.password = password; }
     public void expireMember() { this.status = MemberStatus.EXPIRED; }
+
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+    }
 }

@@ -7,6 +7,7 @@ import com.kookmin.lyl.module.order.domain.OrderProduct;
 import com.kookmin.lyl.module.order.domain.OrderStatus;
 import com.kookmin.lyl.module.order.domain.OrderType;
 import com.kookmin.lyl.module.order.dto.OrderDetails;
+import com.kookmin.lyl.module.order.dto.OrderProductDetails;
 import com.kookmin.lyl.module.order.dto.OrderProductInfo;
 import com.kookmin.lyl.module.order.dto.OrderSearchCondition;
 import com.kookmin.lyl.module.order.repository.OrderProductRepository;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,8 +37,8 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
 
-    public void addCart(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
-        Order order = orderRepository.findByMemberIdAndOrderType(memberId, OrderType.CART.toString()).get(0);
+    public Long addCart(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
+        Order order = orderRepository.findCartByMemberMemberIdAndOrderType(memberId, OrderType.CART.toString());
         Product product = productRepository.findById(orderProductInfo.getProductId()).orElseThrow(EntityNotFoundException::new);
         ProductOption productOption = productOptionRepository.findById(orderProductInfo.getProductOptionId())
                 .orElseThrow(EntityNotFoundException::new);
@@ -49,7 +51,7 @@ public class OrderService {
                     .member(member)
                     .build();
 
-            orderRepository.save(order);
+            order = orderRepository.save(order);
         }
 
         OrderProduct orderProduct =
@@ -57,6 +59,7 @@ public class OrderService {
 
         if(orderProduct == null) {
             orderProduct = OrderProduct.builder()
+                    .order(order)
                     .productId(product.getId())
                     .productName(product.getName())
                     .productOptionId(productOption.getId())
@@ -65,8 +68,12 @@ public class OrderService {
                     .quantity(orderProductInfo.getQuantity())
                     .build();
         } else {
-            orderProduct.increaseQuantity();
+            orderProduct.increaseQuantity(orderProductInfo.getQuantity());
         }
+
+        orderProduct = orderProductRepository.save(orderProduct);
+
+        return order.getId();
     }
 
     public void orderCart(@NonNull Long orderId) {
@@ -115,10 +122,42 @@ public class OrderService {
 
     public OrderDetails findOrderDetails(@NonNull Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
-        List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(orderId);
+        List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(order.getId());
+
+        List<OrderProductDetails> orderProductDetails = new ArrayList<>();
+
+        for(OrderProduct orderProduct : orderProducts) {
+            orderProductDetails.add(new OrderProductDetails(orderProduct));
+        }
 
         OrderDetails orderDetails = new OrderDetails(order);
-        orderDetails.setOrderProducts(orderProducts);
+        orderDetails.setOrderProducts(orderProductDetails);
+
+        return  orderDetails;
+    }
+
+    public OrderDetails findCartOrderDetails(@NonNull String memberId) {
+        Order order = orderRepository.findCartByMemberMemberIdAndOrderType(memberId, OrderType.CART.toString());
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(EntityNotFoundException::new);
+
+        if(order == null) {
+            order = Order.builder()
+                    .orderType(OrderType.CART)
+                    .member(member)
+                    .build();
+
+            order = orderRepository.save(order);
+        }
+
+        List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(order.getId());
+        List<OrderProductDetails> orderProductDetails = new ArrayList<>();
+
+        for(OrderProduct orderProduct : orderProducts) {
+            orderProductDetails.add(new OrderProductDetails(orderProduct));
+        }
+
+        OrderDetails orderDetails = new OrderDetails(order);
+        orderDetails.setOrderProducts(orderProductDetails);
 
         return  orderDetails;
     }
