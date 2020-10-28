@@ -94,6 +94,11 @@
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.eaxdev</groupId>
+            <artifactId>jsonresume-validator</artifactId>
+            <version>0.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>
