@@ -106,7 +106,20 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Page<ProductDetails> searchProducts(@NonNull Pageable pageable, @NonNull ProductSearchCondition searchCondition) {
-        return productRepositorySearch.searchProductDetails(pageable, searchCondition);
+        Page<ProductDetails> productDetails = productRepositorySearch.searchProductDetails(pageable, searchCondition);
+
+        for(ProductDetails product : productDetails.getContent()) {
+            List<ProductOption> productOptions = productOptionRepository.findByProductId(product.getProductNumber());
+            List<ProductOptionDetails> productOptionDetails = new ArrayList<>();
+
+            for(ProductOption productOption : productOptions) {
+                productOptionDetails.add(new ProductOptionDetails(productOption));
+            }
+
+            product.setProductOptionDetails(productOptionDetails);
+        }
+
+        return productDetails;
     }
 
     @Override
