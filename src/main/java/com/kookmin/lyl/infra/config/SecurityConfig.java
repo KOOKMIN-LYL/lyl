@@ -21,7 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .anyRequest().authenticated();
 
-        http.formLogin();
+        http.formLogin()
+        .defaultSuccessUrl("/cart", true);
         http.httpBasic();
         http.csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
