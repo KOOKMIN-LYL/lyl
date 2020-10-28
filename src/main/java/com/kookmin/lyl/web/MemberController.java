@@ -5,6 +5,7 @@ import com.kookmin.lyl.module.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,13 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+
+    @PostMapping(value = "/member/join")
+    public String join(MemberCreateInfo memberCreateInfo) {
+        memberService.join(memberCreateInfo);
+
+        return "ok";
+    }
 
     @PostConstruct
     public void setUpMember() {
