@@ -3,13 +3,16 @@ package com.kookmin.lyl.web;
 import com.kookmin.lyl.module.member.dto.MemberCreateInfo;
 import com.kookmin.lyl.module.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpRequest;
+import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import java.security.Principal;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

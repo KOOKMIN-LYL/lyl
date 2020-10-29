@@ -8,11 +8,15 @@ import com.kookmin.lyl.module.member.dto.MemberDetails;
 import com.kookmin.lyl.module.member.dto.MemberEditInfo;
 import com.kookmin.lyl.module.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,9 +79,11 @@ public class MemberService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-        Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new UsernameNotFoundException(memberId));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("MEMBERID : " + username);
+
+        Member member = memberRepository.findByMemberId(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
 
         return User.builder()
                 .username(member.getMemberId())
