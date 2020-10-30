@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //http.addFilterBefore(customResponseHeaderFilter, SecurityContextPersistenceFilter.class);
+        http.addFilterBefore(customResponseHeaderFilter, SecurityContextPersistenceFilter.class);
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class);
         http.httpBasic().disable();
@@ -56,17 +56,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         http.authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/category/**", "/product/**").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/login", "/member/join").permitAll()
+                .mvcMatchers(HttpMethod.OPTIONS, "/login", "/member/join").permitAll()
                 .anyRequest().authenticated();
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-
         registry.addMapping("/**")
                 .allowedMethods("*")
                 .allowedOrigins("*")
                 .allowedHeaders("*")
-                .allowedHeaders("Access-Control-Allow-Origin");
+                .allowedHeaders("Access-Control-Allow-Origin")
+        .allowedHeaders("Access-Control-Allow-Headers");
 
     }
 
