@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.security.Principal;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,8 +30,8 @@ public class OrderController {
         return orderService.findCartOrderDetails(principal.getName());
     }
 
-    @DeleteMapping(value = "/cart/product")
-    public String deleteProductFromCart(Long orderProductId) {
+    @DeleteMapping(value = "/cart/product/{orderProductId}")
+    public String deleteProductFromCart(@PathVariable("orderProductId") Long orderProductId) {
         orderService.cancelOrderProduct(orderProductId);
 
         return "ok";
