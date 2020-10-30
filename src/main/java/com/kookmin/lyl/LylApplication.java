@@ -11,7 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class LylApplication {
 
     @Bean
-    public PasswordEncoder passwordEncoder() { return PasswordEncoderFactories.createDelegatingPasswordEncoder();}
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(LylApplication.class, args);
