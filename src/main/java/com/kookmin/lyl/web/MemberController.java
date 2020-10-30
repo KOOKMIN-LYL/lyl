@@ -32,7 +32,7 @@ public class MemberController {
 
 
     @PostMapping(value = "/member/join")
-    public String join(MemberCreateInfo memberCreateInfo) {
+    public String join(@RequestBody MemberCreateInfo memberCreateInfo) {
         memberService.join(memberCreateInfo);
 
         return "ok";
