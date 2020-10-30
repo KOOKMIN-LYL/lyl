@@ -18,7 +18,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping(value = "/cart/product")
-    public String addProductToCart(OrderProductInfo orderProductInfo, Principal principal) {
+    public String addProductToCart(@RequestBody OrderProductInfo orderProductInfo, Principal principal) {
         orderService.addCart(principal.getName(), orderProductInfo);
 
         return "ok";
@@ -47,7 +47,7 @@ public class OrderController {
     }
 
     @PostMapping(value = "/order/product")
-    public String orderProduct(OrderProductInfo orderProductInfo, Principal principal) {
+    public String orderProduct(@RequestBody OrderProductInfo orderProductInfo, Principal principal) {
         orderService.orderProduct(principal.getName(), orderProductInfo);
         return "ok";
     }
