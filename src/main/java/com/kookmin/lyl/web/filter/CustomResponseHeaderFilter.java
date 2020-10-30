@@ -21,10 +21,10 @@ public class CustomResponseHeaderFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
-        httpServletResponse.setHeader("X-XSRF-TOKEN", "true");
+        httpServletResponse.setHeader("X-AUTH-TOKEN", "true");
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, token, Authorization," +
-                "X-Auth-Token,X-XSRF-TOKEN,Access-Control-Allow-Headers");
+                "X-AUTH-TOKEN, Access-Control-Allow-Headers");
 
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }
