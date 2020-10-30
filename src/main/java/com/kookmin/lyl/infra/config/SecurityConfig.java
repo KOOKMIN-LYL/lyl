@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .mvcMatchers(HttpMethod.GET, "/category/**", "/product/**").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/login", "/member/join").permitAll()
                 .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .mvcMatchers(HttpMethod.POST, "/cart/product").hasRole(MemberType.USER.toString())
+                .mvcMatchers(HttpMethod.POST, "/**").hasRole(MemberType.USER.toString())
                 .anyRequest().hasRole(MemberType.USER.toString());
     }
 
