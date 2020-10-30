@@ -30,7 +30,7 @@ public class OrderController {
     }
 
     @DeleteMapping(value = "/cart/product")
-    public String deleteProductFromCart(Long orderProductId) {
+    public String deleteProductFromCart(@RequestBody Long orderProductId) {
         orderService.cancelOrderProduct(orderProductId);
 
         return "ok";
