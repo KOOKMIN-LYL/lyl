@@ -2,6 +2,8 @@ package com.kookmin.lyl.infra.config;
 
 import com.google.common.collect.ImmutableList;
 import com.kookmin.lyl.infra.support.JwtTokenProvider;
+import com.kookmin.lyl.module.member.domain.MemberStatus;
+import com.kookmin.lyl.module.member.domain.MemberType;
 import com.kookmin.lyl.module.member.service.MemberService;
 import com.kookmin.lyl.web.filter.CustomResponseHeaderFilter;
 import com.kookmin.lyl.web.filter.JwtAuthenticationFilter;
@@ -44,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     private final CustomResponseHeaderFilter customResponseHeaderFilter;
     private final JwtTokenProvider jwtTokenProvider;
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(customResponseHeaderFilter, SecurityContextPersistenceFilter.class);
@@ -56,8 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         http.authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/category/**", "/product/**").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/login", "/member/join").permitAll()
-                .mvcMatchers(HttpMethod.OPTIONS, "/login", "/member/join").permitAll()
-                .anyRequest().authenticated();
+                .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .anyRequest().hasRole(MemberType.USER.toString());
     }
 
     @Override
@@ -65,9 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         registry.addMapping("/**")
                 .allowedMethods("*")
                 .allowedOrigins("*")
-                .allowedHeaders("*")
-                .allowedHeaders("Access-Control-Allow-Origin")
-        .allowedHeaders("Access-Control-Allow-Headers");
+                .allowedHeaders("*");
 
     }
 
