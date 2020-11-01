@@ -2,14 +2,9 @@ package com.kookmin.lyl.module.order.service;
 
 import com.kookmin.lyl.module.member.domain.Member;
 import com.kookmin.lyl.module.member.repository.MemberRepository;
-import com.kookmin.lyl.module.order.domain.Order;
-import com.kookmin.lyl.module.order.domain.OrderProduct;
-import com.kookmin.lyl.module.order.domain.OrderStatus;
-import com.kookmin.lyl.module.order.domain.OrderType;
-import com.kookmin.lyl.module.order.dto.OrderDetails;
-import com.kookmin.lyl.module.order.dto.OrderProductDetails;
-import com.kookmin.lyl.module.order.dto.OrderProductInfo;
-import com.kookmin.lyl.module.order.dto.OrderSearchCondition;
+import com.kookmin.lyl.module.order.domain.*;
+import com.kookmin.lyl.module.order.dto.*;
+import com.kookmin.lyl.module.order.repository.DeliveryInformationRepository;
 import com.kookmin.lyl.module.order.repository.OrderProductRepository;
 import com.kookmin.lyl.module.order.repository.OrderRepository;
 import com.kookmin.lyl.module.product.domain.Product;
@@ -20,11 +15,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,6 +34,7 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
+    private final DeliveryInformationRepository deliveryInformationRepository;
 
     public Long addCart(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
         Order order = orderRepository.findCartByMemberMemberIdAndOrderType(memberId, OrderType.CART.toString());
@@ -87,9 +86,46 @@ public class OrderService {
         orderProduct.editQuantity(orderProductInfo.getQuantity());
     }
 
-    public void orderCart(@NonNull Long orderId) {
+    //TODO :: 배송지 정보가 2개가 아닐경우 오류처리
+    public void purchaseOrder(@NonNull Long orderId, @Nullable String request, @NonNull List<OrderDeliveryInfo> orderDeliveryInfos) {
+        if(orderDeliveryInfos.size() != 2) throw new RuntimeException();
         Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
 
+        DeliveryInformation senderInformation = null;
+        DeliveryInformation receiverInformation = null;
+
+        for (OrderDeliveryInfo orderDeliveryInfo : orderDeliveryInfos) {
+            if(orderDeliveryInfo.getUserType().equals("SENDER")) {
+                senderInformation = DeliveryInformation.builder()
+                        .name(orderDeliveryInfo.getName())
+                        .address(orderDeliveryInfo.getAddress())
+                        .phone(orderDeliveryInfo.getPhone())
+                        .email(orderDeliveryInfo.getEmail())
+                        .userType(UserType.valueOf(orderDeliveryInfo.getUserType()))
+                        .order(order)
+                        .build();
+            } else {
+                receiverInformation = DeliveryInformation.builder()
+                        .name(orderDeliveryInfo.getName())
+                        .address(orderDeliveryInfo.getAddress())
+                        .phone(orderDeliveryInfo.getPhone())
+                        .email(orderDeliveryInfo.getEmail())
+                        .userType(UserType.valueOf(orderDeliveryInfo.getUserType()))
+                        .order(order)
+                        .build();
+            }
+        }
+
+        //TODO :: 일치하는 배송지 정보가 둘중 하나라도 없을 경우 오류처리
+        if(senderInformation == null || receiverInformation == null) throw new RuntimeException();
+
+        deliveryInformationRepository.save(senderInformation);
+        deliveryInformationRepository.save(receiverInformation);
+
+        order.editDeliveryAddress(receiverInformation.getAddress());
+        order.editOrderedAt(LocalDateTime.now());
+        order.editRequest(request);
+        order.editOrderStatus(OrderStatus.PENDING);
     }
 
     public Long orderProduct(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
@@ -124,6 +160,7 @@ public class OrderService {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(EntityNotFoundException::new);
 
         Order cart = orderRepository.findCartByMemberMemberIdAndOrderType(memberId, OrderType.CART.toString());
+
         Order order = Order.builder()
                 .member(member)
                 .orderType(OrderType.ORDER)

@@ -1,5 +1,6 @@
 package com.kookmin.lyl.module.order.dto;
 
+import com.kookmin.lyl.module.order.domain.DeliveryInformation;
 import com.kookmin.lyl.module.order.domain.Order;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class OrderDetails {
     private String orderStatus;
     private String orderType;
     private List<OrderProductDetails> orderProducts;
+    private List<OrderDeliveryInfo> orderDeliveryInfos;
 
     public OrderDetails(Order order) {
         this.id = order.getId();
