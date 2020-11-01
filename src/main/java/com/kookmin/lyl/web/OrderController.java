@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -78,4 +76,6 @@ public class OrderController {
                 .status(HttpStatus.OK)
                 .body("수량이 변경되었습니다");
     }
+
+    //@PostMapping(value = "")
 }

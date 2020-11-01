@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,9 @@ public class Order {
 
     @Column(name = "REQUEST")
     private String request;
+
+    @Column(name = "OREDER_AT")
+    private LocalDateTime orderedAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ORDER_STATUS")
@@ -69,4 +73,7 @@ public class Order {
         this.request = request;
     }
 
+    public void editOrderedAt(LocalDateTime orderedAt) {
+        this.orderedAt = orderedAt;
+    }
 }

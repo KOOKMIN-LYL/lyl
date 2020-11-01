@@ -89,8 +89,7 @@ public class OrderService {
 
     public void orderCart(@NonNull Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
-        order.editOrderType(OrderType.ORDER);
-        order.editOrderStatus(OrderStatus.PENDING);
+
     }
 
     public Long orderProduct(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
