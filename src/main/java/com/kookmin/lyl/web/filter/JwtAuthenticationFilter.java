@@ -21,8 +21,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        System.out.println("METHOD: " + ((HttpServletRequest)servletRequest).getMethod());
-        System.out.println(((HttpServletRequest)servletRequest).getHeader("X-AUTH-TOKEN"));
 
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
 

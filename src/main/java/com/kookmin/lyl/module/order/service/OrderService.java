@@ -76,13 +76,24 @@ public class OrderService {
         return order.getId();
     }
 
+    public void editProductQuantity(@NonNull Long orderId, @NonNull OrderProductInfo orderProductInfo) {
+        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+
+        OrderProduct orderProduct = orderProductRepository
+                .findByOrderIdAndProductIdAndProductOptionId(order.getId(),
+                        orderProductInfo.getProductId(),
+                        orderProductInfo.getProductOptionId());
+
+        orderProduct.editQuantity(orderProductInfo.getQuantity());
+    }
+
     public void orderCart(@NonNull Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
         order.editOrderType(OrderType.ORDER);
         order.editOrderStatus(OrderStatus.PENDING);
     }
 
-    public void orderProduct(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
+    public Long orderProduct(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
         Product product = productRepository.findById(orderProductInfo.getProductId()).orElseThrow(EntityNotFoundException::new);
         ProductOption productOption = productOptionRepository.findById(orderProductInfo.getProductOptionId())
                 .orElseThrow(EntityNotFoundException::new);
@@ -92,9 +103,6 @@ public class OrderService {
                 .member(member)
                 .orderType(OrderType.ORDER)
                 .build();
-
-        order.editDeliveryAddress(orderProductInfo.getDeliveryAddress());
-        order.editRequest(orderProductInfo.getRequest());
 
         order = orderRepository.save(order);
 
@@ -109,6 +117,44 @@ public class OrderService {
                 .build();
 
         orderProduct = orderProductRepository.save(orderProduct);
+
+        return order.getId();
+    }
+
+    public Long orderProduct(@NonNull String memberId, @NonNull List<OrderProductInfo> orderProductInfos) {
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(EntityNotFoundException::new);
+
+        Order cart = orderRepository.findCartByMemberMemberIdAndOrderType(memberId, OrderType.CART.toString());
+        Order order = Order.builder()
+                .member(member)
+                .orderType(OrderType.ORDER)
+                .build();
+
+        order = orderRepository.save(order);
+
+        for(OrderProductInfo orderProductInfo : orderProductInfos) {
+            Product product = productRepository.findById(orderProductInfo.getProductId())
+                    .orElseThrow(EntityNotFoundException::new);
+            ProductOption productOption = productOptionRepository.findById(orderProductInfo.getProductOptionId())
+                    .orElseThrow(EntityNotFoundException::new);
+
+            OrderProduct orderProduct = OrderProduct.builder()
+                    .order(order)
+                    .productId(product.getId())
+                    .productName(product.getName())
+                    .productOptionId(productOption.getId())
+                    .productOptions(productOption.getOption())
+                    .productPrice(product.getPrice())
+                    .quantity(orderProductInfo.getQuantity())
+                    .build();
+
+            //카트에 존재하는 프로덕트 아이디, 옵션 아이디가 일치하는 품목들 제거
+            orderProductRepository.deleteByProductIdAndProductOptionIdAndOrderId(product.getId(),
+                    productOption.getId(), cart.getId());
+            orderProduct = orderProductRepository.save(orderProduct);
+        }
+
+        return order.getId();
     }
 
     public void cancelOrder(@NonNull Long orderId) {

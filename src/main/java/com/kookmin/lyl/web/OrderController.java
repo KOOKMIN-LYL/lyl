@@ -7,10 +7,14 @@ import com.kookmin.lyl.module.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,8 +52,30 @@ public class OrderController {
     }
 
     @PostMapping(value = "/order/product")
-    public String orderProduct(@RequestBody OrderProductInfo orderProductInfo, Principal principal) {
-        orderService.orderProduct(principal.getName(), orderProductInfo);
-        return "ok";
+    public ResponseEntity<Long> orderProduct(@RequestBody OrderProductInfo orderProductInfo, Principal principal) {
+        Long orderId = orderService.orderProduct(principal.getName(), orderProductInfo);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderId);
+    }
+
+    @PostMapping(value = "/cart/order")
+    public ResponseEntity<Long> orderProductsInCart(@RequestBody Map<String, List<OrderProductInfo>> params, Principal principal) {
+        Long orderId = orderService.orderProduct(principal.getName(), params.get("orderInfos"));
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderId);
+    }
+
+    @PutMapping(value = "/cart/order/{orderId}")
+    public ResponseEntity<String> editOrderProductQuantity(@RequestBody OrderProductInfo orderProductInfo,
+                                                           @PathVariable("orderId") Long orderId) {
+        orderService.editProductQuantity(orderId, orderProductInfo);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("수량이 변경되었습니다");
     }
 }

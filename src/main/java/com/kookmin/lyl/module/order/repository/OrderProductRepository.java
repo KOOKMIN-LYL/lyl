@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface OrderProductRepository extends JpaRepository<OrderProduct, Long> {
-    OrderProduct findByOrderIdAndProductIdAndProductOptionId(Long orderId, Long productId, Long productOptionId);
-    List<OrderProduct> findByOrderId(Long orderId);
+    public OrderProduct findByOrderIdAndProductIdAndProductOptionId(Long orderId, Long productId, Long productOptionId);
+    public List<OrderProduct> findByOrderId(Long orderId);
+    public void deleteByProductIdAndProductOptionIdAndOrderId(Long productId, Long productOptionId, Long orderId);
 }

@@ -75,8 +75,6 @@ public class ProductController {
         orderProductInfo.setProductId(4L);
         orderProductInfo.setProductOptionId(5L);
         orderProductInfo.setQuantity(5);
-        orderProductInfo.setDeliveryAddress("address");
-        orderProductInfo.setRequest("request");
 
         System.out.println("ORDER : " + orderService.addCart("user", orderProductInfo));
 
