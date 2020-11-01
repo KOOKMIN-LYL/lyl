@@ -56,6 +56,10 @@ public class OrderProduct {
         this.quantity += quantity;
     }
 
+    public void editQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public void eidtOrder(Order order) {
         if(order != null) {
             this.order = order;

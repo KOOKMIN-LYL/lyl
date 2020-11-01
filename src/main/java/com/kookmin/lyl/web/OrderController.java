@@ -61,11 +61,21 @@ public class OrderController {
     }
 
     @PostMapping(value = "/cart/order")
-    public ResponseEntity<?> orderProductsInCart(@RequestBody Map<String, List<OrderProductInfo>> params, Principal principal) {
+    public ResponseEntity<Long> orderProductsInCart(@RequestBody Map<String, List<OrderProductInfo>> params, Principal principal) {
         Long orderId = orderService.orderProduct(principal.getName(), params.get("orderInfos"));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(orderId);
+    }
+
+    @PutMapping(value = "/cart/order/{orderId}")
+    public ResponseEntity<String> editOrderProductQuantity(@RequestBody OrderProductInfo orderProductInfo,
+                                                           @PathVariable("orderId") Long orderId) {
+        orderService.editProductQuantity(orderId, orderProductInfo);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("수량이 변경되었습니다");
     }
 }

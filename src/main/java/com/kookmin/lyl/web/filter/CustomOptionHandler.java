@@ -15,8 +15,6 @@ public class CustomOptionHandler extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         final String token = request.getHeader(TOKEN);
 
-        System.out.println("HANDLE!!!!!");
-
         if (request.getMethod().equals("OPTIONS")) {
             return true;
         }

@@ -76,6 +76,17 @@ public class OrderService {
         return order.getId();
     }
 
+    public void editProductQuantity(@NonNull Long orderId, @NonNull OrderProductInfo orderProductInfo) {
+        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+
+        OrderProduct orderProduct = orderProductRepository
+                .findByOrderIdAndProductIdAndProductOptionId(order.getId(),
+                        orderProductInfo.getProductId(),
+                        orderProductInfo.getProductOptionId());
+
+        orderProduct.editQuantity(orderProductInfo.getQuantity());
+    }
+
     public void orderCart(@NonNull Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
         order.editOrderType(OrderType.ORDER);
