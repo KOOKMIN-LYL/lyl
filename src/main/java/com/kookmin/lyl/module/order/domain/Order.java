@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,5 +79,10 @@ public class Order {
 
     public void editOrderedAt(LocalDateTime orderedAt) {
         this.orderedAt = orderedAt;
+    }
+
+    public String getOrderedAtToString() {
+        if(this.orderedAt == null) return null;
+        return orderedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
