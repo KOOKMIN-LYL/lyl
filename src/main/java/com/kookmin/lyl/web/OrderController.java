@@ -1,19 +1,24 @@
 package com.kookmin.lyl.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.kookmin.lyl.module.order.dto.OrderDeliveryInfo;
 import com.kookmin.lyl.module.order.dto.OrderDetails;
 import com.kookmin.lyl.module.order.dto.OrderProductInfo;
 import com.kookmin.lyl.module.order.dto.OrderSearchCondition;
 import com.kookmin.lyl.module.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import java.security.Principal;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -77,5 +82,27 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("수량이 변경되었습니다");
+    }
+
+    @PostMapping(value = "/order/purchase/{orderId}")
+    public ResponseEntity<String> purchaseOrder(@PathVariable("orderId") Long orderId,
+                                                @RequestBody Map<String, Object> params)
+            throws JSONException, JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String request = (String)params.get("request");
+
+        List<OrderDeliveryInfo> orderDeliveryInfos = new ArrayList<>();
+        List<Map<String,String>> jsonList = (List<Map<String,String>>)params.get("orderDeliveryInfos");
+
+        for(Map<String, String> map: jsonList) {
+            orderDeliveryInfos.add(objectMapper.convertValue(map, OrderDeliveryInfo.class));
+        }
+
+        orderService.purchaseOrder(orderId, request, orderDeliveryInfos);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("상품이 주문되었습니다");
     }
 }

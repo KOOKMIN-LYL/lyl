@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class Order {
     @Column(name = "REQUEST")
     private String request;
 
+    @Column(name = "OREDER_AT")
+    private LocalDateTime orderedAt;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "ORDER_STATUS")
     private OrderStatus status;
@@ -41,6 +45,9 @@ public class Order {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderProduct> orderProducts = new ArrayList<OrderProduct>();
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<DeliveryInformation> deliveryInformations = new ArrayList<>();
 
     @Builder
     public Order(OrderType orderType, Member member) {
@@ -69,4 +76,7 @@ public class Order {
         this.request = request;
     }
 
+    public void editOrderedAt(LocalDateTime orderedAt) {
+        this.orderedAt = orderedAt;
+    }
 }

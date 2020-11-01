@@ -24,17 +24,6 @@ public class OrderRepositorySearchImpl extends LylQuerydslRepositorySupport impl
         super(Order.class);
     }
 
-    /* private Long orderId;
-    private String orderStatus;
-    private String orderType;
-            this.id = id;
-        this.totalPrice = totalPrice;
-        this.deliveryAddress = deliveryAddress;
-        this.request = request;
-        this.orderStatus = orderStatus;
-        this.orderType = orderType;
-    */
-
     @Override
     public Page<OrderDetails> searchOrderDetails(Pageable pageable, OrderSearchCondition condition) {
         return applyPagination(pageable, contentQuery -> contentQuery
