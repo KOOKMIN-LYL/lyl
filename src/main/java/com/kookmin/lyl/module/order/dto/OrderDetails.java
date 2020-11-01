@@ -5,6 +5,7 @@ import com.kookmin.lyl.module.order.domain.Order;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class OrderDetails {
         this.request = order.getRequest();
         this.orderStatus = order.getStatus().toString();
         this.orderType = order.getOrderType().toString();
-        this.orderedAt = order.getOrderedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.orderedAt = order.getOrderedAtToString();
     }
 
     @QueryProjection
@@ -39,4 +40,5 @@ public class OrderDetails {
         this.orderStatus = orderStatus;
         this.orderType = orderType;
     }
+
 }
