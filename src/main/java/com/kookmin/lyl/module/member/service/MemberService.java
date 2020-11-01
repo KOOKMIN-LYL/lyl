@@ -8,6 +8,7 @@ import com.kookmin.lyl.module.member.dto.MemberDetails;
 import com.kookmin.lyl.module.member.dto.MemberEditInfo;
 import com.kookmin.lyl.module.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -70,6 +71,11 @@ public class MemberService implements UserDetailsService {
 
     public MemberDetails findMember(Long usn) {
         Member member = memberRepository.findById(usn).orElseThrow(EntityNotFoundException::new);
+        return new MemberDetails(member);
+    }
+
+    public MemberDetails findMemberByUsername(@NonNull String username) {
+        Member member = memberRepository.findByMemberId(username).orElseThrow(EntityNotFoundException::new);
         return new MemberDetails(member);
     }
 
