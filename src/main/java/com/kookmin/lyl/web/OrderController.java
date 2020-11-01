@@ -7,6 +7,8 @@ import com.kookmin.lyl.module.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -48,8 +50,11 @@ public class OrderController {
     }
 
     @PostMapping(value = "/order/product")
-    public String orderProduct(@RequestBody OrderProductInfo orderProductInfo, Principal principal) {
-        orderService.orderProduct(principal.getName(), orderProductInfo);
-        return "ok";
+    public ResponseEntity<Long> orderProduct(@RequestBody OrderProductInfo orderProductInfo, Principal principal) {
+        Long orderId = orderService.orderProduct(principal.getName(), orderProductInfo);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderId);
     }
 }

@@ -82,7 +82,7 @@ public class OrderService {
         order.editOrderStatus(OrderStatus.PENDING);
     }
 
-    public void orderProduct(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
+    public Long orderProduct(@NonNull String memberId, @NonNull OrderProductInfo orderProductInfo) {
         Product product = productRepository.findById(orderProductInfo.getProductId()).orElseThrow(EntityNotFoundException::new);
         ProductOption productOption = productOptionRepository.findById(orderProductInfo.getProductOptionId())
                 .orElseThrow(EntityNotFoundException::new);
@@ -109,6 +109,8 @@ public class OrderService {
                 .build();
 
         orderProduct = orderProductRepository.save(orderProduct);
+
+        return order.getId();
     }
 
     public void cancelOrder(@NonNull Long orderId) {
