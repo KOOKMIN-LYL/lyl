@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -52,6 +54,15 @@ public class OrderController {
     @PostMapping(value = "/order/product")
     public ResponseEntity<Long> orderProduct(@RequestBody OrderProductInfo orderProductInfo, Principal principal) {
         Long orderId = orderService.orderProduct(principal.getName(), orderProductInfo);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderId);
+    }
+
+    @PostMapping(value = "/cart/order")
+    public ResponseEntity<?> orderProductsInCart(@RequestBody Map<String, List<OrderProductInfo>> params, Principal principal) {
+        Long orderId = orderService.orderProduct(principal.getName(), params.get("orderInfos"));
 
         return ResponseEntity
                 .status(HttpStatus.OK)

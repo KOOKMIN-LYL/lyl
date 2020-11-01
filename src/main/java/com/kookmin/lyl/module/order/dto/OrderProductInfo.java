@@ -8,6 +8,4 @@ public class OrderProductInfo {
     private Long productId;
     private Long productOptionId;
     private int quantity;
-    private String request;
-    private String deliveryAddress;
 }
