@@ -212,8 +212,16 @@ public class OrderService {
             orderProductDetails.add(new OrderProductDetails(orderProduct));
         }
 
+        List<OrderDeliveryInfo> orderDeliveryInfos = new ArrayList<>();
+
+        for(DeliveryInformation deliveryInformation : order.getDeliveryInformations()) {
+            orderDeliveryInfos.add(new OrderDeliveryInfo(deliveryInformation));
+        }
+
         OrderDetails orderDetails = new OrderDetails(order);
+
         orderDetails.setOrderProducts(orderProductDetails);
+        orderDetails.setOrderDeliveryInfos(orderDeliveryInfos);
 
         return  orderDetails;
     }

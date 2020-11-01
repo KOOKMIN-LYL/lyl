@@ -46,6 +46,9 @@ public class Order {
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderProduct> orderProducts = new ArrayList<OrderProduct>();
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<DeliveryInformation> deliveryInformations = new ArrayList<>();
+
     @Builder
     public Order(OrderType orderType, Member member) {
         this.status = OrderStatus.READY;
