@@ -40,46 +40,4 @@ public class ProductController {
     public ProductDetails getProductDetails(@PathVariable("productId") Long productId) {
         return productService.findProduct(productId);
     }
-
-    @PostConstruct
-    public void setUpProduct() {
-        Shop shop = new Shop();
-        shop = shopRepository.save(shop);
-
-        Category category = Category.builder()
-                .name("category1")
-                .build();
-        category = categoryRepository.save(category);
-
-        System.out.println("ID: " + category.getId());
-
-        for(int i = 1; i <= 100; ++i) {
-            ProductCreateInfo productCreateInfo = new ProductCreateInfo();
-            productCreateInfo.setCategoryId(category.getId());
-            productCreateInfo.setShopId(shop.getShopNumber());
-            productCreateInfo.setManufacturer("제조사"+i);
-            productCreateInfo.setName("추가물품"+i);
-            productCreateInfo.setOrigin("원산지"+i);
-            productCreateInfo.setPrice(i*100);
-
-            ProductOptionCreateInfo productOptionCreateInfo = new ProductOptionCreateInfo();
-
-            Long id = productService.createProduct(productCreateInfo);
-            productOptionCreateInfo.setProductNumber(id);
-            productOptionCreateInfo.setOption("옵션" + i);
-            productOptionCreateInfo.setType(ProductOptionType.SIZE.toString());
-            productService.addProductOption(productOptionCreateInfo);
-        }
-
-        OrderProductInfo orderProductInfo = new OrderProductInfo();
-        orderProductInfo.setProductId(4L);
-        orderProductInfo.setProductOptionId(5L);
-        orderProductInfo.setQuantity(5);
-
-        System.out.println("ORDER : " + orderService.addCart("user", orderProductInfo));
-
-        orderProductInfo.setQuantity(4);
-
-        orderService.addCart("user", orderProductInfo);
-    }
 }

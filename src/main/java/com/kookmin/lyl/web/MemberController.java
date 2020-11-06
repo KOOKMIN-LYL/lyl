@@ -67,16 +67,4 @@ public class MemberController {
                 .status(HttpStatus.OK)
                 .body(memberDetails);
     }
-
-    @PostConstruct
-    public void setUpMember() {
-        MemberCreateInfo memberCreateInfo = new MemberCreateInfo();
-        memberCreateInfo.setId("user");
-        memberCreateInfo.setPassword("123");
-        memberCreateInfo.setAddress("주소");
-        memberCreateInfo.setName("유저1");
-        memberCreateInfo.setEmail("dlwlsrn9411@kookmin.ac.kr");
-        memberCreateInfo.setPhone("00-00-00");
-        memberService.join(memberCreateInfo);
-    }
 }
