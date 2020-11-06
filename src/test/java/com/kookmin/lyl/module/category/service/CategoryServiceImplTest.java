@@ -33,12 +33,9 @@ class CategoryServiceImplTest {
     @Test
     @DisplayName("createCategory 성공 테스트 (최초 등록시)")
     public void createCategory_success_test() {
-        categoryRepository.deleteAll();
-
-        entityManager.flush(); entityManager.clear();
-
         CategoryCreateInfo categoryCreateInfo = CategoryBuilder.getCategoryCreateInfo();
 
+        int count = categoryRepository.findAll().size();
         Long categoryId = categoryService.createCategory(categoryCreateInfo);
 
         CategoryDetails categoryDetails = categoryService.findCategory(categoryId);
@@ -46,7 +43,7 @@ class CategoryServiceImplTest {
         assertThat(categoryDetails)
                 .hasFieldOrPropertyWithValue("id", categoryId)
                 .hasFieldOrPropertyWithValue("name", categoryCreateInfo.getName())
-                .hasFieldOrPropertyWithValue("sortOrder", 1L);
+                .hasFieldOrPropertyWithValue("sortOrder", (long)count+1);
 
     }
 }

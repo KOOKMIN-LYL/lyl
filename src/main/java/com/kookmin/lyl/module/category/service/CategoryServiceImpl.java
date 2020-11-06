@@ -27,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService{
                 .name(categoryCreateInfo.getName())
                 .build();
 
-        Category latestCategory = categoryRepository.findFirstByOrderBySortOrderAsc();
+        Category latestCategory = categoryRepository.findFirstByOrderBySortOrderDesc();
 
         category.initSortOrder(latestCategory);
 
