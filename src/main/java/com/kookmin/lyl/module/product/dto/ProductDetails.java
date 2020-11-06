@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ProductDetails {
+    private static String BASE_URL = "https://lyl-image-storage.s3.ap-northeast-2.amazonaws.com/";
     private Long productNumber;
     private String name;
     private Integer price;
@@ -21,6 +22,7 @@ public class ProductDetails {
     private Long categoryId;
     private Long shopNumber;
     private List<ProductOptionDetails> productOptionDetails;
+    private String imagePath;
 
     @QueryProjection
     public ProductDetails(Long productNumber, String name, Integer price, String manufacturer, String origin,
@@ -33,6 +35,7 @@ public class ProductDetails {
         this.status = status;
         this.categoryId = categoryId;
         this.shopNumber = shopNumber;
+        this.imagePath = BASE_URL + name + ".jpg";
     }
 
     //TODO:: 지연로딩때문에 페치 조인 전략으로 바꿀 필요가 있음
@@ -45,5 +48,6 @@ public class ProductDetails {
         this.status = product.getStatus();
         this.categoryId = product.getCategory().getId();
         this.shopNumber = product.getShop().getShopNumber();
+        this.imagePath = BASE_URL + this.name + ".jpg";
     }
 }
