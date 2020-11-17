@@ -7,4 +7,5 @@ public class OrderSearchCondition {
     private Long orderId;
     private String orderStatus;
     private String orderType;
+    private String memberId;
 }

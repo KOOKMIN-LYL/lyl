@@ -20,6 +20,7 @@ public class OrderDetails {
     private String orderedAt;
     private List<OrderProductDetails> orderProducts;
     private List<OrderDeliveryInfo> orderDeliveryInfos;
+    private String memberId;
 
     public OrderDetails(Order order) {
         this.id = order.getId();
@@ -29,16 +30,19 @@ public class OrderDetails {
         this.orderStatus = order.getStatus().toString();
         this.orderType = order.getOrderType().toString();
         this.orderedAt = order.getOrderedAtToString();
+        this.memberId = order.getMember().getMemberId();
     }
 
     @QueryProjection
-    public OrderDetails(Long id, int totalPrice, String deliveryAddress, String request, String orderStatus, String orderType) {
+    public OrderDetails(Long id, int totalPrice, String deliveryAddress, String request, String orderStatus,
+                        String orderType, String memberId) {
         this.id = id;
         this.totalPrice = totalPrice;
         this.deliveryAddress = deliveryAddress;
         this.request = request;
         this.orderStatus = orderStatus;
         this.orderType = orderType;
+        this.memberId = memberId;
     }
 
 }

@@ -28,10 +28,12 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping(value = "/cart/product")
-    public String addProductToCart(@RequestBody OrderProductInfo orderProductInfo, Principal principal) {
+    public ResponseEntity<String> addProductToCart(@RequestBody OrderProductInfo orderProductInfo, Principal principal) {
         orderService.addCart(principal.getName(), orderProductInfo);
 
-        return "ok";
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("상품이 카트에 등록되었습니다.");
     }
 
     @GetMapping(value = "/cart")
@@ -40,10 +42,12 @@ public class OrderController {
     }
 
     @DeleteMapping(value = "/cart/product/{orderProductId}")
-    public String deleteProductFromCart(@PathVariable("orderProductId") Long orderProductId) {
+    public ResponseEntity<String> deleteProductFromCart(@PathVariable("orderProductId") Long orderProductId) {
         orderService.cancelOrderProduct(orderProductId);
 
-        return "ok";
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("상품이 카트에서 제거 되었습니다.");
     }
 
     @GetMapping(value = "/order/{orderId}")
@@ -52,7 +56,8 @@ public class OrderController {
     }
 
     @GetMapping(value = "/order")
-    public Page<OrderDetails> getOrderDetailsList(Pageable pageable, OrderSearchCondition condition) {
+    public Page<OrderDetails> getOrderDetailsList(Pageable pageable, OrderSearchCondition condition, Principal principal) {
+        //condition.setMemberId(principal.getName());
         return orderService.searchOrderList(pageable, condition);
     }
 

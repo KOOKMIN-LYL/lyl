@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Data
 public class OrderProductDetails {
+    private static String BASE_URL = "https://lyl-image-storage.s3.ap-northeast-2.amazonaws.com/";
     private Long id;
     private Long productId;
     private Long productOptionId;
@@ -15,6 +16,7 @@ public class OrderProductDetails {
     private int productPrice;
     private int quantity;
     private String productOptions;
+    private String imagePath;
 
     public OrderProductDetails(OrderProduct orderProduct) {
         this.id = orderProduct.getId();
@@ -24,6 +26,7 @@ public class OrderProductDetails {
         this.productPrice = orderProduct.getProductPrice();
         this.quantity = orderProduct.getQuantity();
         this.productOptions = orderProduct.getProductOptions();
+        this.imagePath = BASE_URL + productName + ".jpg";
     }
 
 }

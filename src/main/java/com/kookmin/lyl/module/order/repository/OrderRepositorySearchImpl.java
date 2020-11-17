@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.StyledEditorKit;
+
 import static com.kookmin.lyl.module.member.domain.QMember.member;
 import static com.kookmin.lyl.module.order.domain.QOrder.*;
 import static com.kookmin.lyl.module.product.domain.QProduct.product;
@@ -29,11 +31,13 @@ public class OrderRepositorySearchImpl extends LylQuerydslRepositorySupport impl
         return applyPagination(pageable, contentQuery -> contentQuery
                 .select(new QOrderDetails(
                         order.id, order.totalPrice, order.deliveryAddress, order.request, order.status.stringValue(),
-                        order.orderType.stringValue()))
+                        order.orderType.stringValue(), member.memberId))
                 .from(order)
+                .leftJoin(order.member, member)
                 .where(orderIdEq(condition.getOrderId()),
                         orderStatusEq(condition.getOrderStatus()),
-                        orderTypeEq(condition.getOrderType()))
+                        orderTypeEq(condition.getOrderType()),
+                        memberIdEq(condition.getMemberId()))
                 );
     }
 
@@ -47,15 +51,19 @@ public class OrderRepositorySearchImpl extends LylQuerydslRepositorySupport impl
                 .fetchOne();
     }
 
-    public BooleanExpression orderIdEq(Long orderId) {
+    private BooleanExpression orderIdEq(Long orderId) {
         return orderId == null ? null : order.id.eq(orderId);
     }
 
-    public BooleanExpression orderStatusEq(String status) {
+    private BooleanExpression orderStatusEq(String status) {
         return status == null ? null : order.status.eq(OrderStatus.valueOf(status));
     }
 
-    public BooleanExpression orderTypeEq(String orderType) {
+    private BooleanExpression orderTypeEq(String orderType) {
         return orderType == null ? null : order.orderType.eq(OrderType.valueOf(orderType));
+    }
+
+    private BooleanExpression memberIdEq(String memberId) {
+        return memberId == null ? null : member.memberId.eq(memberId);
     }
 }

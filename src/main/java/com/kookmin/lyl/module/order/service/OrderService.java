@@ -198,8 +198,23 @@ public class OrderService {
         order.editOrderType(OrderType.CANCELED);
     }
 
-    public Page<OrderDetails> searchOrderList(@NonNull Pageable pageable, @NonNull OrderSearchCondition searchCondition) {
-        return orderRepository.searchOrderDetails(pageable, searchCondition);
+    public Page<OrderDetails> searchOrderList(@NonNull Pageable pageable,
+                                              @NonNull OrderSearchCondition searchCondition) {
+        Page<OrderDetails> result = orderRepository.searchOrderDetails(pageable, searchCondition);
+        List<OrderDetails> orderDetails = result.getContent();
+
+        for(OrderDetails orderDetail : orderDetails) {
+            List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(orderDetail.getId());
+            List<OrderProductDetails> orderProductDetails = new ArrayList<>();
+
+            for(OrderProduct orderProduct : orderProducts) {
+                orderProductDetails.add(new OrderProductDetails(orderProduct));
+            }
+
+            orderDetail.setOrderProducts(orderProductDetails);
+        }
+
+        return result;
     }
 
     public OrderDetails findOrderDetails(@NonNull Long orderId) {
