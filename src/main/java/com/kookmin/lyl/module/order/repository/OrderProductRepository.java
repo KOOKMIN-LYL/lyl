@@ -2,6 +2,7 @@ package com.kookmin.lyl.module.order.repository;
 
 import com.kookmin.lyl.module.order.domain.OrderProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

@@ -30,5 +30,10 @@ logging:
       SQL: DEBUG
       type.descriptor.sql.BasicBinder: TRACE
 
+
 server:
   port: 8089
+
+mybatis:
+  mapper-locations: mapper/**/*.xml
+  type-aliases-package: com.kookmin.lyl.module.order.dto
