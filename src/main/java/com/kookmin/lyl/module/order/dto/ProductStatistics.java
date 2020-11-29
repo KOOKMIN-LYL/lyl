@@ -8,7 +8,6 @@ import org.apache.ibatis.type.Alias;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Alias("productStatistics")
 public class ProductStatistics {
     private int count;
     private Long productId;

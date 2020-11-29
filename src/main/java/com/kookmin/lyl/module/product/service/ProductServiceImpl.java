@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kookmin.lyl.infra.util.SearchCondition;
 import com.kookmin.lyl.module.category.domain.Category;
 import com.kookmin.lyl.module.category.repository.CategoryRepository;
+import com.kookmin.lyl.module.order.dto.ProductStatistics;
+import com.kookmin.lyl.module.order.mapper.OrderProductMapper;
 import com.kookmin.lyl.module.product.domain.Product;
 import com.kookmin.lyl.module.product.domain.ProductOption;
 import com.kookmin.lyl.module.product.domain.ProductOptionType;
@@ -36,6 +38,7 @@ public class ProductServiceImpl implements ProductServiceWithCache{
     private final ShopRepository shopRepository;
     private final ProductRepositorySearch productRepositorySearch;
     private final ProductCacheRepository productCacheRepository;
+    private final OrderProductMapper orderProductMapper;
 
     @Override
     public Long createProduct(@NonNull ProductCreateInfo productCreateInfo) {
@@ -176,6 +179,26 @@ public class ProductServiceImpl implements ProductServiceWithCache{
         }
 
         return productOptionDetails;
+    }
+
+    @Override
+    public List<ProductDetails> findTop10Products() {
+        List<ProductDetails> productDetailsList = productCacheRepository.findTop10Products();
+
+        if(productDetailsList == null || productDetailsList.size() == 0) {
+            productDetailsList = new ArrayList<>();
+
+            List<ProductStatistics> productStatisticsList = orderProductMapper.selectTop10Products();
+
+            for (ProductStatistics productStatistics : productStatisticsList) {
+                ProductDetails productDetails = this.findProduct(productStatistics.getProductId());
+                productDetailsList.add(productDetails);
+            }
+
+            productCacheRepository.addTop10Products(productDetailsList);
+        }
+
+        return productDetailsList;
     }
 
     //TODO:: product와 연관관계가 없는 productOption이 수정될 가능성이 있으므로 이를 방지해야함, 여러 로직에서 쓰일 수 있으므로 메소드로 분리

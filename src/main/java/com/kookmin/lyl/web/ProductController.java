@@ -63,7 +63,8 @@ public class ProductController {
             mainResources.put("recentProducts", productDetailsList);
         }
 
-
+        List<ProductDetails> top10Products = productService.findTop10Products();
+        mainResources.put("top10Products", top10Products);
 
         String mainResourcesAsJson = objectMapper.writeValueAsString(mainResources);
 

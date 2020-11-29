@@ -17,14 +17,9 @@ import java.util.Map;
 
 @SpringBootTest
 class LylApplicationTests {
-    @Autowired
-    private OrderProductMapper mapper;
-
     @Test
     void test() throws JsonProcessingException {
-        List<ProductStatistics> result = mapper.selectTop10Products();
 
-        System.out.println(result.size());
     }
 
 }
