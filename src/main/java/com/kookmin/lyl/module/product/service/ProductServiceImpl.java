@@ -1,5 +1,7 @@
 package com.kookmin.lyl.module.product.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kookmin.lyl.infra.util.SearchCondition;
 import com.kookmin.lyl.module.category.domain.Category;
 import com.kookmin.lyl.module.category.repository.CategoryRepository;
@@ -7,6 +9,7 @@ import com.kookmin.lyl.module.product.domain.Product;
 import com.kookmin.lyl.module.product.domain.ProductOption;
 import com.kookmin.lyl.module.product.domain.ProductOptionType;
 import com.kookmin.lyl.module.product.dto.*;
+import com.kookmin.lyl.module.product.repository.ProductCacheRepository;
 import com.kookmin.lyl.module.product.repository.ProductOptionRepository;
 import com.kookmin.lyl.module.product.repository.ProductRepository;
 import com.kookmin.lyl.module.product.repository.ProductRepositorySearch;
@@ -23,15 +26,16 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("productService")
 @Transactional
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductServiceWithCache{
     private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
     private final CategoryRepository categoryRepository;
     private final ShopRepository shopRepository;
     private final ProductRepositorySearch productRepositorySearch;
+    private final ProductCacheRepository productCacheRepository;
 
     @Override
     public Long createProduct(@NonNull ProductCreateInfo productCreateInfo) {
@@ -189,5 +193,21 @@ public class ProductServiceImpl implements ProductService{
         }
 
         return productOption;
+    }
+
+    @Override
+    public ProductDetails findProductWithCache(@NonNull Long productNumber,
+                                               @NonNull String memberId) {
+
+        ProductDetails productDetails = this.findProduct(productNumber);
+
+        productCacheRepository.add(memberId, productDetails);
+
+        return productDetails;
+    }
+
+    @Override
+    public List<ProductDetails> findRecentSearchedProducts(String memberId) {
+        return productCacheRepository.findRecentSearchedProducts(memberId);
     }
 }
