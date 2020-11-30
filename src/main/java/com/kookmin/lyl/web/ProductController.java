@@ -55,7 +55,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/main")
-    public ResponseEntity<String> getMainResources(@Nullable Principal principal) throws JsonProcessingException {
+    public ResponseEntity getMainResources(@Nullable Principal principal) throws JsonProcessingException {
         Map<String, Object> mainResources = new HashMap<>();
 
         if(principal != null) {
@@ -66,10 +66,8 @@ public class ProductController {
         List<ProductDetails> top10Products = productService.findTop10Products();
         mainResources.put("top10Products", top10Products);
 
-        String mainResourcesAsJson = objectMapper.writeValueAsString(mainResources);
-
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(mainResourcesAsJson);
+                .body(mainResources);
     }
 }

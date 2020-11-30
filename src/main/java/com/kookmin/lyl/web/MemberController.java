@@ -36,10 +36,12 @@ public class MemberController {
 
 
     @PostMapping(value = "/member/join")
-    public String join(@RequestBody MemberCreateInfo memberCreateInfo) {
+    public ResponseEntity<String> join(@RequestBody MemberCreateInfo memberCreateInfo) {
         memberService.join(memberCreateInfo);
 
-        return "ok";
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("회원가입이 완료되었습니다.");
     }
 
     @PostMapping(value = "/login")
