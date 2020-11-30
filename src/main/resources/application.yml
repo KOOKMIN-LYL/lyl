@@ -16,7 +16,7 @@ spring:
     password: lyldatabase
 
   redis:
-    host: 127.0.0.1
+    host: 3.35.229.94
     port: 6379
     lettuce:
       pool:
