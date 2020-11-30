@@ -8,11 +8,21 @@ spring:
         format_sql: true
     #Controller에서 엔티티 매니저를 사용한 Lazy로딩을 하지 못하도록 막
     open-in-view: false
+
   datasource:
     driver-class-name: org.postgresql.Driver
     username: lyl
     url: jdbc:postgresql://lyl-database.c6lllniau47k.ap-northeast-2.rds.amazonaws.com:5432/lyl
     password: lyldatabase
+
+  redis:
+    host: 3.35.229.94
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 2
+        max-idle: 8
 
 logging:
   level:
@@ -20,5 +30,10 @@ logging:
       SQL: DEBUG
       type.descriptor.sql.BasicBinder: TRACE
 
+
 server:
   port: 8089
+
+mybatis:
+  mapper-locations: mapper/**/*.xml
+  type-aliases-package: com.kookmin.lyl.module.order.dto

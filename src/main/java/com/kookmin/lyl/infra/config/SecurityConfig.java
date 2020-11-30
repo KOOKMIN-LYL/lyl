@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/category/**", "/product/**").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/category/**", "/product/**", "/main/**").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/login", "/member/join").permitAll()
                 .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/**").hasRole(MemberType.USER.toString())

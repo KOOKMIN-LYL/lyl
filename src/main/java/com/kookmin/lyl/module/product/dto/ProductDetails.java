@@ -6,6 +6,7 @@ import com.kookmin.lyl.module.product.domain.ProductStatus;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.util.List;
 

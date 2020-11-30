@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kookmin.lyl.module.order.mapper.OrderProductMapper">
+    <resultMap id="productStatistics" type="com.kookmin.lyl.module.order.dto.ProductStatistics">
+        <result column="cnt" property="count" />
+        <result column="product_id" property="productId" />
+    </resultMap>
+
+    <select id="selectTop10Products" resultMap="productStatistics">
+        SELECT COUNT(*) AS CNT, PRODUCT_ID
+        FROM ORDER_PRODUCT
+        GROUP BY PRODUCT_ID
+        ORDER BY CNT DESC
+        LIMIT 10
+    </select>
+
+</mapper>

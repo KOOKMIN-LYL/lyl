@@ -1,6 +1,7 @@
 package com.kookmin.lyl.module.product.service;
 
 import com.kookmin.lyl.infra.util.SearchCondition;
+import com.kookmin.lyl.module.order.dto.ProductStatistics;
 import com.kookmin.lyl.module.product.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
