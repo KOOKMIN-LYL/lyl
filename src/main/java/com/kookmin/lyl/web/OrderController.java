@@ -57,7 +57,7 @@ public class OrderController {
 
     @GetMapping(value = "/order")
     public Page<OrderDetails> getOrderDetailsList(Pageable pageable, OrderSearchCondition condition, Principal principal) {
-        //condition.setMemberId(principal.getName());
+        condition.setMemberId(principal.getName());
         return orderService.searchOrderList(pageable, condition);
     }
 
